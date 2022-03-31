@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    [SerializeField] Dialogue dialogue;
+    [SerializeField] TextAsset inkDialogue;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
         {
-            DialogueManager.instance.EnterDialogueMode(dialogue);
+            DialogueManager.instance.EnterDialogueMode(inkDialogue);
         }
     }
 }

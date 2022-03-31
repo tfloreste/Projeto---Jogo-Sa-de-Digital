@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
-
+using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager instance = null;
 
     [Header("Dialogue UI")]
     [SerializeField] private GameObject dialoguePanel;
@@ -20,19 +18,18 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private GameEvent dialogueStartedEvent;
     [SerializeField] private GameEvent dialogEndedEvent;
 
-    //[Header("Choices UI")]
-    //[SerializeField] private GameObject[] choices;
-    //private TextMeshProUGUI[] choicesText;
 
+    // INK TAGS
+    private const string NAME_TAG = "name";
+
+    public static DialogueManager instance;
 
     private void Awake()
     {
-        if(instance != null)
+        if (instance != null)
         {
-            Debug.LogError("Mais de um DialogueManager criado na cena: " + SceneManager.GetActiveScene().name);
-            //Destroy(this);
+            Debug.LogWarning("Found more than one Dialogue Manager in the scene: " + SceneManager.GetActiveScene().name);
         }
-
         instance = this;
     }
 
@@ -41,50 +38,71 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
     }
 
-    public void EnterDialogueMode(Dialogue dialogue)
+    public void EnterDialogueMode(TextAsset inkJSON)
     {
+        Story story = new Story(inkJSON.text);
         dialoguePanel.SetActive(true);
+
         dialogueStartedEvent?.Invoke();
 
-        StartCoroutine(ShowDialogue(dialogue));
+        StartCoroutine(ShowDialogue(story));
     }
 
-    private IEnumerator ShowDialogue(Dialogue dialogue)
+    private IEnumerator ExitDialogueMode()
     {
-        Debug.Log("ShowDialogue fired");
-        dialogue.InitDialogue();
-
-        while (dialogue.CanContinue())
-        {
-            DialogueLine dialogueLineData = dialogue.GetCurrentLineData();
-            DialogueCharacter dialogueCharacterData = dialogueLineData.GetCharacterData();
-
-            dialogueText.text = dialogueLineData.GetLineText();
-            characterName.text = dialogueCharacterData.characterName;
-
-            yield return new WaitForSeconds(0.2f);
-            while(Input.touchCount == 0)
-            {
-                yield return null;
-            }
-
-            //yield return Input.GetKeyDown(KeyCode.Space);
-        }
-
         yield return new WaitForSeconds(0.2f);
-        Debug.Log("ShowDialogue ended");
 
-        ExitDialogueMode();
-    }
-
-
-    private void ExitDialogueMode()
-    {
-        
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
 
         dialogEndedEvent?.Invoke();
     }
+
+    private IEnumerator ShowDialogue(Story story)
+    {
+        while(story.canContinue)
+        {
+            dialogueText.text = story.Continue().Trim();
+            HandleTags(story.currentTags);
+
+            yield return new WaitForSeconds(0.2f);
+            
+            while(Input.touchCount == 0)
+            {
+                yield return null;
+            }
+        }
+        
+        StartCoroutine(ExitDialogueMode());
+    }
+
+
+    private void HandleTags(List<string> lineTags)
+    {
+        // loop through each tag and handle it accordingly
+        foreach (string tag in lineTags)
+        {
+            // parse the tag
+            string[] splitTag = tag.Split(':');
+            if (splitTag.Length != 2)
+            {
+                Debug.LogError("Tag could not be appropriately parsed: " + tag);
+            }
+            string tagKey = splitTag[0].Trim();
+            string tagValue = splitTag[1].Trim();
+
+            // handle the tag
+            switch (tagKey)
+            {
+                case NAME_TAG:
+                    characterName.text = tagValue;
+                    break;
+                default:
+                    Debug.LogWarning("Tag came in but is not currently being handled: " + tag);
+                    break;
+            }
+        }
+    }
+
 
 }
