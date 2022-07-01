@@ -10,7 +10,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if(collision.CompareTag("Player"))
         {
-            DialogueManager.instance.EnterDialogueMode(inkDialogue);
+            DialogueManager.Instance.EnterDialogueMode(inkDialogue);
         }
     }
 }

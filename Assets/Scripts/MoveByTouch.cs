@@ -11,6 +11,7 @@ public class MoveByTouch : MonoBehaviour
     { 
         if(moveEnabled && Input.touchCount > 0)
         {
+            Debug.Log("Moving");
             Touch touch = Input.GetTouch(0);
             Vector3 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
             touchPosition.z = 0;
