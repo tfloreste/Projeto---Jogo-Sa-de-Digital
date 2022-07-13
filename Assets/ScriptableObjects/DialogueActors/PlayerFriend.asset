@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 229cb39d756f7614c855e50f9ba4c84c, type: 3}
   m_Name: PlayerFriend
   m_EditorClassIdentifier: 
-  id: 
-  actorName: 
+  id: A
+  actorName: Alan
   voiceSoundEffect: {fileID: 0}

@@ -13,6 +13,9 @@ public class DialogueManager : Singleton<DialogueManager>
     [Header("Params")]
     [SerializeField] private float standardTypingDelay = 0.05f;
 
+    [Header("Data")]
+    [SerializeField] private DialogueActorProvider actorProvider = null;
+
     [Header("Dialogue UI")]
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private Animator dialoguePanelAnimator;
@@ -27,6 +30,14 @@ public class DialogueManager : Singleton<DialogueManager>
     private bool isNewSentenceLine = true;
     private Dialogue currentDialogue = null;
     private bool isTyping = false;
+    private string currentActorName = null;
+    private AudioClip currentActorVoice = null;
+    private AudioSource audioSource = null;
+
+    private enum DialogueState { OPEN, CLOSED };
+    private DialogueState currentDialogueState;
+    private bool actorChanged = false;
+
 
     // INK TAGS
     private const string NAME_TAG = "name";
@@ -37,18 +48,53 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         dialoguePanel.SetActive(false);
         typingDelay = standardTypingDelay;
+        audioSource = GetComponent<AudioSource>();
+
+        currentDialogueState = DialogueState.CLOSED;
     }
 
-    public void EnterDialogueMode(TextAsset inkJSON)
+    //public void EnterDialogueMode(TextAsset inkJSON)
+    //{
+    //    Story story = new Story(inkJSON.text);
+    //    dialoguePanel.SetActive(true);
+    //    dialogueText.text = "";
+    //
+    //    dialogueStartedEvent?.Invoke();
+    //
+    //    StartCoroutine(ShowDialogue(story));
+    //}
+
+    private IEnumerator ExitDialogueMode()
     {
-        Story story = new Story(inkJSON.text);
-        dialoguePanel.SetActive(true);
-        dialogueText.text = "";
-
-        dialogueStartedEvent?.Invoke();
-
-        StartCoroutine(ShowDialogue(story));
+        yield return InputDelay();
+    
+        //dialoguePanel.SetActive(false);
+        //dialogueText.text = "";
+        currentDialogue = null;
+        if (currentDialogueState == DialogueState.OPEN)
+            CloseDialogue(null);
+    
+        dialogEndedEvent?.Invoke();
     }
+
+    //private IEnumerator ShowDialogue(Story story)
+    //{
+    //    while(story.canContinue)
+    //    {
+    //        string nextSentence = story.Continue().TrimEnd();
+    //
+    //        ClearTagsEffects();
+    //        HandleTags(story.currentTags);
+    //
+    //        yield return InputDelay();
+    //        yield return TypeSentence(nextSentence);
+    //
+    //        yield return InputDelay();
+    //        yield return WaitForInput();
+    //    }
+    //    
+    //    StartCoroutine(ExitDialogueMode());
+    //}
 
     private bool PlayerInputDetected() => Input.touchCount > 0;
 
@@ -65,34 +111,33 @@ public class DialogueManager : Singleton<DialogueManager>
         yield return new WaitForSeconds(0.2f);
     }
 
-    private IEnumerator ExitDialogueMode()
+    private void SetActorName(DialogueLineData lineData)
     {
-        yield return InputDelay();
-
-        dialoguePanel.SetActive(false);
-        dialogueText.text = "";
-        currentDialogue = null;
-
-        dialogEndedEvent?.Invoke();
-    }
-
-    private IEnumerator ShowDialogue(Story story)
-    {
-        while(story.canContinue)
+        string newActorName = "";
+        currentActorVoice = null;
+        if (lineData.actor != "" && lineData.actor != null && actorProvider != null)
         {
-            string nextSentence = story.Continue().TrimEnd();
+            DialogueActor actor = actorProvider.GetActor(lineData.actor);
+            if(actor != null)
+            {
+                newActorName = actor.actorName;
+                currentActorVoice = actor.voiceSoundEffect;
+            }
+        } 
 
-            ClearTagsEffects();
-            HandleTags(story.currentTags);
-
-            yield return InputDelay();
-            yield return TypeSentence(nextSentence);
-
-            yield return InputDelay();
-            yield return WaitForInput();
+        if(newActorName == "")
+        {
+            newActorName = lineData.actor;
         }
-        
-        StartCoroutine(ExitDialogueMode());
+
+        actorChanged = (newActorName != currentActorName);
+        if(actorChanged)
+        {
+            currentActorName = newActorName;
+        }
+
+        characterName.text = newActorName;
+
     }
 
     public bool IsTypingDialogue()
@@ -104,20 +149,20 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         currentDialogue = dialogue;
 
-        dialoguePanel.SetActive(true);
-        dialogueText.text = "";
+        //dialoguePanel.SetActive(true);
+        //dialogueText.text = "";
 
         dialogueStartedEvent?.Invoke();
     }
 
-    public void SetDialogueOnTime(double elapsedTime, bool ignoreTypingDelay)
+    public bool SetDialogueOnTime(double elapsedTime, bool ignoreTypingDelay)
     {
         if (currentDialogue == null)
-            return;
+            return false;
 
         DialogueLineData lineData = currentDialogue.GetCurrentLine();
         if (lineData.lineTextChunks.Count == 0)
-            return;
+            return true;
 
         float currentDialogueTime = 0.0f;
         string currentText = "";
@@ -146,10 +191,17 @@ public class DialogueManager : Singleton<DialogueManager>
                 break;
         }
 
-
         dialogueText.text = currentText;
         dialogueText.maxVisibleCharacters = numVisibleChars;
-        characterName.text = lineData.actorName;
+        SetActorName(lineData);
+
+        if (currentDialogueState == DialogueState.CLOSED 
+            || (actorChanged && Mathf.Approximately((float)elapsedTime, 0.0f)))
+        {
+            StartCoroutine(PerformDialogueUITransition());
+        }
+
+        return currentText.Length <= numVisibleChars; // Retornar true se o dialogo estiver completo
     }
 
     public void SetDialogueProgress(double progress, bool ignoreTypingDelay)
@@ -166,8 +218,6 @@ public class DialogueManager : Singleton<DialogueManager>
         else if (progress <= 0)
             return;
 
-        Debug.Log("setting dialogue progress: " + progress.ToString());
-
         float totalTime = 0.0f;
         foreach (var lineChunk in lineData.lineTextChunks)
         {
@@ -179,7 +229,6 @@ public class DialogueManager : Singleton<DialogueManager>
         }
 
         double elapsedTime = totalTime * progress;
-        Debug.Log("Total Time: " + totalTime.ToString() + " | elapsedTime: " + elapsedTime.ToString());
         SetDialogueOnTime(elapsedTime, ignoreTypingDelay);
 
     }
@@ -224,8 +273,11 @@ public class DialogueManager : Singleton<DialogueManager>
     private IEnumerator ShowLine(DialogueLineData lineData)
     {
         this.isTyping = true;
-
-        characterName.text = lineData.actorName;
+        
+        SetActorName(lineData);
+        if (actorChanged || currentDialogueState == DialogueState.CLOSED)
+            yield return PerformDialogueUITransition();
+  
         this.isNewSentenceLine = true;
         foreach (DialogueChunkData lineChunk in lineData.lineTextChunks)
         {
@@ -266,70 +318,63 @@ public class DialogueManager : Singleton<DialogueManager>
 
     }
 
-    private void ClearTagsEffects()
-    {
-        characterName.text = "???";
-        isNewSentenceLine = true;
-        typingDelay = standardTypingDelay;
-    }
-
-    private void HandleTags(List<string> lineTags)
-    {
-        // loop through each tag and handle it accordingly
-        foreach (string tag in lineTags)
-        {
-            // parse the tag
-            string[] splitTag = tag.Split(':');
-            if (splitTag.Length != 2)
-            {
-                Debug.LogError("Tag could not be appropriately parsed: " + tag);
-            }
-            string tagKey = splitTag[0].Trim().ToLower();
-            string tagValue = splitTag[1].Trim();
-
-            // handle the tag
-            switch (tagKey)
-            {
-                case NAME_TAG:
-                    characterName.text = tagValue;
-                    break;
-
-                case TYPING_DELAY:
-                    Debug.Log("Tag TYPING_DELAY detectada com valor: " + tagValue);
-                    if(!float.TryParse(tagValue, NumberStyles.Float, CultureInfo.InvariantCulture, out typingDelay))
-                    {
-                        typingDelay = standardTypingDelay;
-                        Debug.LogWarning("Failed to parse typing delay: " + tagValue);
-                    }
-                    break;
-
-                case CONTINUE_LINE:
-                    Debug.Log("Tag CONTINUE_LINE detectada");
-                    isNewSentenceLine = false;
-                    dialogueText.text += " "; 
-                    break;
-
-                default:
-                    Debug.LogWarning("Tag came in but is not currently being handled: " + tag);
-                    break;
-            }
-        }
-    }
 
     public void OpenDialogue(Action callbackFunc)
     {
         dialoguePanelAnimator.SetBool("isOpen", true);
+        currentDialogueState = DialogueState.OPEN;
 
         if (callbackFunc != null)
             callbackFunc();
     }
 
-    public void CloseDialogue(Action callbackFunc)
+    public IEnumerator OpenDialogue()
     {
+        dialoguePanel.SetActive(true);
+        dialoguePanelAnimator.SetBool("isOpen", true);
+        currentDialogueState = DialogueState.OPEN;
+
+        yield return new WaitForSeconds(0.15f);
+    }
+
+    public void CloseDialogue(Action callbackFunc)
+    {   
+        // Condição para evitar erros
+        if (!dialoguePanel.activeSelf)
+            dialoguePanel.SetActive(true);
+
         dialoguePanelAnimator.SetBool("isOpen", false);
+        currentDialogueState = DialogueState.CLOSED;
 
         if (callbackFunc != null)
             callbackFunc();
+    }
+
+    public IEnumerator CloseDialogue()
+    {
+        dialoguePanelAnimator.SetBool("isOpen", false);
+        currentDialogueState = DialogueState.CLOSED;
+
+        yield return new WaitForSeconds(0.15f);
+        dialoguePanel.SetActive(false);
+    }
+
+
+    public IEnumerator PerformDialogueUITransition()
+    {
+        if (currentDialogueState == DialogueState.OPEN)
+            yield return CloseDialogue();
+
+        yield return OpenDialogue();
+    }
+
+    public void PlayActorVoice()
+    {
+        if (currentActorVoice == null || audioSource == null)
+            return;
+
+        audioSource.clip = currentActorVoice;
+        audioSource.Play();
     }
 
 }

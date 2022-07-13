@@ -21,7 +21,7 @@ public struct DialogueChunkData
 
 public struct DialogueLineData 
 {
-    public string actorName;
+    public string actor;
     public List<DialogueChunkData> lineTextChunks;
 }
 
@@ -34,6 +34,7 @@ public class Dialogue
 
     // INK TAGS
     private const string NAME_TAG = "name";
+    private const string ACTOR_TAG = "actor";
     private const string TYPING_DELAY = "typing_delay";
     private const string CONTINUE_LINE = "continue_line";
 
@@ -55,10 +56,28 @@ public class Dialogue
             if (!_inkStory.canContinue)
                 break;
 
-            string dialogueText = _inkStory.Continue().TrimEnd();
+            string dialogueText = _inkStory.Continue().Trim();
             if(dialogueText != "")
             {
-                Debug.Log("Creating new chunkText with dialog: " + dialogueText);
+                if(thisLineData.actor == "" || thisLineData.actor == null)
+                {
+                    string[] splitDialogue = dialogueText.Split(':');
+                    Debug.Log(splitDialogue);
+                    if(splitDialogue.Length > 1)
+                    {
+                        thisLineData.actor = splitDialogue[0];
+                    }
+
+                    string auxDialogueText = "";
+                    for(int i = 1; i < splitDialogue.Length; i++)
+                    {
+                        if (i > 1) auxDialogueText += ":";
+                        auxDialogueText += splitDialogue[i];
+                    }
+
+                    dialogueText = auxDialogueText.Trim();
+                }
+
                 DialogueChunkData newChunkData = new DialogueChunkData(dialogueText);
                 thisLineData.lineTextChunks.Add(newChunkData);
             }
@@ -104,19 +123,19 @@ public class Dialogue
         {
             // parse the tag
             string[] splitTag = tag.Split(':');
-            if (splitTag.Length != 2)
-            {
-                Debug.LogError("Tag could not be appropriately parsed: " + tag);
-            }
             string tagKey = splitTag[0].Trim().ToLower();
-            string tagValue = splitTag[1].Trim();
+            string tagValue = splitTag.Length > 1 ? splitTag[1].Trim() : "";
 
             // handle the tag
             switch (tagKey)
             {
-                case NAME_TAG:
-                    dialogueLineData.actorName = tagValue;
-                    break;
+                //case NAME_TAG:
+                //    dialogueLineData.actorName = tagValue;
+                //    break;
+                //
+                //case ACTOR_TAG:
+                //    dialogueLineData.actorId = tagValue;
+                //    break;
 
                 case TYPING_DELAY:
                     float typingDelay;

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 229cb39d756f7614c855e50f9ba4c84c, type: 3}
   m_Name: NewStudent
   m_EditorClassIdentifier: 
-  id: 
-  actorName: 
-  voiceSoundEffect: {fileID: 0}
+  id: B
+  actorName: Beatriz
+  voiceSoundEffect: {fileID: 8300000, guid: f7b98b401948a5449894f43e34c05626, type: 3}

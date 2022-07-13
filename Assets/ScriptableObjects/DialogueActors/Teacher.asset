@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 229cb39d756f7614c855e50f9ba4c84c, type: 3}
   m_Name: Teacher
   m_EditorClassIdentifier: 
-  id: 
-  actorName: 
-  voiceSoundEffect: {fileID: 0}
+  id: professor
+  actorName: Prof. Carla
+  voiceSoundEffect: {fileID: 8300000, guid: 3282255d5fe8fa348a837fcf0ca8a56a, type: 3}
