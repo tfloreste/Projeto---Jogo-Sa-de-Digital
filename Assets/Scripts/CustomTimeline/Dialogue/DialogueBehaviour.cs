@@ -19,7 +19,8 @@ public class DialogueBehaviour : PlayableBehaviour
 	private bool clipStarted = false;
 	private bool pauseScheduled = false;
 	private PlayableDirector director;
-	private bool typingCompleted = false;
+	private bool typingCompleted = false;	// verdadeiro quando o diálogo é completo (inclusive quando o jogador pula o diálogo)
+	private bool skipedTalking = false;		// verdadeiro quando o jogador pula o diálogo
 	private bool closeDialogRegistered = false;
 	private bool dialogueClosed = false;
 	private double lastTimeVoiceWasPlayed = -1;
@@ -48,10 +49,13 @@ public class DialogueBehaviour : PlayableBehaviour
 			}
 
 			// Seta o progresso do diálogo baseado nos parametros setados
-			if (progressBasedOnDuration || typingCompleted)
+			if (progressBasedOnDuration || skipedTalking)
 			{
-				double progress = typingCompleted ? 1.0 : playable.GetTime() / playable.GetDuration();
+				double progress = skipedTalking ? 1.0 : playable.GetTime() / playable.GetDuration();
 				DialogueManager.Instance.SetDialogueProgress(progress, forceLinearTypingDelay);
+
+				if (progress >= 1.0)
+					typingCompleted = true;
 			}
 			else
 			{
@@ -63,6 +67,7 @@ public class DialogueBehaviour : PlayableBehaviour
 			// função para fechar o UI
 			if(typingCompleted && !closeDialogRegistered)
             {
+				Debug.Log("Closing dialogue registered");
 				InputManager.OnTouchStart -= SkipTypingAnimation;
 				InputManager.OnTouchStart += CloseDialogue;
 				closeDialogRegistered = true;
@@ -118,6 +123,8 @@ public class DialogueBehaviour : PlayableBehaviour
 
 	private void SkipTypingAnimation()
     {
+		Debug.Log("Closing dialogue registered");
+		skipedTalking = true;
 		typingCompleted = true;
 		closeDialogRegistered = true;
 		InputManager.OnTouchStart -= SkipTypingAnimation;
