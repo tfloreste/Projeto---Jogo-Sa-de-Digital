@@ -31,6 +31,10 @@ public class Dialogue
     private Story _inkStory;
     private DialogueLineData _currentLine;
     private TextAsset _inkTextAsset;
+    private bool _partialDialogue;
+    private int _startIndex;
+    private int _finalIndex;
+    private int _currentIndex;
 
     // INK TAGS
     private const string NAME_TAG = "name";
@@ -41,14 +45,33 @@ public class Dialogue
 
     public Dialogue(TextAsset inkAsset)
     {
-        _inkStory = new Story(inkAsset.text);
-        _inkTextAsset = inkAsset;
+        InitializeInkDialogue(inkAsset);
+        _partialDialogue = false;
+    }
+
+    public Dialogue(TextAsset inkAsset, int startIndex, int finalIndex)
+    {
+        InitializeInkDialogue(inkAsset);
+        _partialDialogue = true;
+        _startIndex = startIndex;
+        _finalIndex = finalIndex;
+
+        SetCurrentLineByIndex(startIndex);
     }
 
     public DialogueLineData GetNextLine()
     {
         DialogueLineData thisLineData = new DialogueLineData();
         thisLineData.lineTextChunks = new List<DialogueChunkData>();
+
+        Debug.Log("get line at index: " + _currentIndex);
+        if (_partialDialogue && _currentIndex > _finalIndex)
+        {
+            Debug.Log("reached final index: " + _finalIndex);
+            _currentLine = thisLineData;
+            return thisLineData;
+        }
+           
 
         bool lineCompleted;
         do
@@ -88,7 +111,10 @@ public class Dialogue
 
         } while (!lineCompleted);
 
+        _currentIndex++;
         _currentLine = thisLineData;
+
+        Debug.Log("line at index: " + thisLineData.lineTextChunks[0].chunkText);
 
         return thisLineData;
     }
@@ -104,6 +130,8 @@ public class Dialogue
 
     public void SetCurrentLineByIndex(int index)
     {
+        _currentIndex = 0;
+
         _inkStory = new Story(_inkTextAsset.text);
         for(int i = 0; i < index; i++)
         {
@@ -165,5 +193,11 @@ public class Dialogue
         }
 
         return continueLine;
+    }
+
+    private void InitializeInkDialogue(TextAsset inkAsset)
+    {
+        _inkStory = new Story(inkAsset.text);
+        _inkTextAsset = inkAsset;
     }
 }

@@ -12,6 +12,9 @@ public class DialogueManager : Singleton<DialogueManager>
 {
     [Header("Params")]
     [SerializeField] private float standardTypingDelay = 0.05f;
+    [SerializeField] private float timeBetweenVoiceEffect = 0.15f;
+    [SerializeField] private float dialoguePainelUpperVerticalPosition  = 132.0f;
+    [SerializeField] private float dialoguePainelBottomVerticalPosition = -115.0f;
 
     [Header("Data")]
     [SerializeField] private DialogueActorProvider actorProvider = null;
@@ -27,7 +30,7 @@ public class DialogueManager : Singleton<DialogueManager>
     [SerializeField] private GameEvent dialogEndedEvent;
 
     private float typingDelay;
-    private bool isNewSentenceLine = true;
+    //private bool isNewSentenceLine = true;
     private Dialogue currentDialogue = null;
     private bool isTyping = false;
     private string currentActorName = null;
@@ -37,12 +40,7 @@ public class DialogueManager : Singleton<DialogueManager>
     private enum DialogueState { OPEN, CLOSED };
     private DialogueState currentDialogueState;
     private bool actorChanged = false;
-
-
-    // INK TAGS
-    private const string NAME_TAG = "name";
-    private const string TYPING_DELAY = "typing_delay";
-    private const string CONTINUE_LINE = "continue_line";
+    private bool completedTypingByTouch = false;
 
     private void Start()
     {
@@ -51,50 +49,21 @@ public class DialogueManager : Singleton<DialogueManager>
         audioSource = GetComponent<AudioSource>();
 
         currentDialogueState = DialogueState.CLOSED;
+        dialoguePanel.transform.localScale = new Vector3(0, 0, 0);
     }
-
-    //public void EnterDialogueMode(TextAsset inkJSON)
-    //{
-    //    Story story = new Story(inkJSON.text);
-    //    dialoguePanel.SetActive(true);
-    //    dialogueText.text = "";
-    //
-    //    dialogueStartedEvent?.Invoke();
-    //
-    //    StartCoroutine(ShowDialogue(story));
-    //}
 
     private IEnumerator ExitDialogueMode()
     {
-        yield return InputDelay();
+        //yield return InputDelay();
     
         //dialoguePanel.SetActive(false);
         //dialogueText.text = "";
         currentDialogue = null;
         if (currentDialogueState == DialogueState.OPEN)
-            CloseDialogue(null);
+            yield return CloseDialogue();
     
         dialogEndedEvent?.Invoke();
     }
-
-    //private IEnumerator ShowDialogue(Story story)
-    //{
-    //    while(story.canContinue)
-    //    {
-    //        string nextSentence = story.Continue().TrimEnd();
-    //
-    //        ClearTagsEffects();
-    //        HandleTags(story.currentTags);
-    //
-    //        yield return InputDelay();
-    //        yield return TypeSentence(nextSentence);
-    //
-    //        yield return InputDelay();
-    //        yield return WaitForInput();
-    //    }
-    //    
-    //    StartCoroutine(ExitDialogueMode());
-    //}
 
     private bool PlayerInputDetected() => Input.touchCount > 0;
 
@@ -104,11 +73,6 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             yield return null;
         }
-    }
-
-    private IEnumerator InputDelay()
-    {
-        yield return new WaitForSeconds(0.2f);
     }
 
     private void SetActorName(DialogueLineData lineData)
@@ -153,6 +117,30 @@ public class DialogueManager : Singleton<DialogueManager>
         //dialogueText.text = "";
 
         dialogueStartedEvent?.Invoke();
+    }
+
+    public void StartDialogue()
+    {
+        Debug.Log("StartDialogue fired");
+        if (currentDialogue == null)
+            return;
+
+        AdvanceDialogue();
+    }
+
+    private void AdvanceDialogueOnTouch()
+    {
+        InputManager.OnTouchStart -= AdvanceDialogueOnTouch;
+        AdvanceDialogue();
+    }
+
+    private void CompleteDialogueMessageOnTouch()
+    {
+        dialogueText.maxVisibleCharacters = dialogueText.text.Length;
+        completedTypingByTouch = true;
+
+        InputManager.OnTouchStart -= CompleteDialogueMessageOnTouch;
+        InputManager.OnTouchStart += AdvanceDialogueOnTouch;
     }
 
     public bool SetDialogueOnTime(double elapsedTime, bool ignoreTypingDelay)
@@ -259,12 +247,6 @@ public class DialogueManager : Singleton<DialogueManager>
             return false;
         }
 
-        if (!currentDialogue.CanContinueDialogue())
-        {
-            StartCoroutine(ExitDialogueMode());
-            return false;
-        }
-
         DialogueLineData lineData = currentDialogue.GetCurrentLine();
         StartCoroutine(ShowLine(lineData));
         return true;
@@ -275,45 +257,72 @@ public class DialogueManager : Singleton<DialogueManager>
         this.isTyping = true;
         
         SetActorName(lineData);
+  
+        //this.isNewSentenceLine = true;
+        dialogueText.text = "";
+
         if (actorChanged || currentDialogueState == DialogueState.CLOSED)
             yield return PerformDialogueUITransition();
-  
-        this.isNewSentenceLine = true;
+
         foreach (DialogueChunkData lineChunk in lineData.lineTextChunks)
         {
             this.typingDelay = lineChunk.typingDelay > 0 ? lineChunk.typingDelay : standardTypingDelay;
-            yield return InputDelay();
+            //yield return InputDelay();
             yield return StartCoroutine(TypeSentence(lineChunk.chunkText));
-            isNewSentenceLine = false;
+            //isNewSentenceLine = false;
         }
 
-        yield return InputDelay();
-        this.isTyping = false;
+        //yield return InputDelay();
+        //this.isTyping = false;
     }
 
 
     private IEnumerator TypeSentence(string sentence)
     {
-        Debug.Log("Starting typeSentence with delay: " + typingDelay);
-
-        if (this.isNewSentenceLine)
-            dialogueText.text = "";
-
         int prevCharCount = dialogueText.text.Length;
 
         dialogueText.text += sentence;
         dialogueText.maxVisibleCharacters = prevCharCount;
 
-        foreach(char letter in sentence.ToCharArray())
+        completedTypingByTouch = false;
+        InputManager.OnTouchStart += CompleteDialogueMessageOnTouch;
+
+        float voiceEffectTimer = -1f;
+
+        foreach (char letter in sentence.ToCharArray())
         {
-            if (PlayerInputDetected())
+           
+            float timer = 0.0f;
+            while(true)
             {
-                dialogueText.maxVisibleCharacters = dialogueText.text.Length;
-                break;
+                if (dialogueText.maxVisibleCharacters == dialogueText.text.Length)
+                    break;
+
+                if (voiceEffectTimer < 0 || voiceEffectTimer >= timeBetweenVoiceEffect)
+                {
+                    PlayActorVoice();
+                    voiceEffectTimer = 0.0f;
+                }
+
+                yield return null;
+
+                timer += Time.deltaTime;
+                voiceEffectTimer += Time.deltaTime;
+
+                if (timer >= this.typingDelay)
+                    break;
             }
 
+            if (dialogueText.maxVisibleCharacters == dialogueText.text.Length)
+                break;
+
             dialogueText.maxVisibleCharacters++;
-            yield return new WaitForSeconds(this.typingDelay);
+        }
+
+        if(!completedTypingByTouch)
+        {
+            InputManager.OnTouchStart -= CompleteDialogueMessageOnTouch;
+            InputManager.OnTouchStart += AdvanceDialogueOnTouch;
         }
 
     }
@@ -335,6 +344,7 @@ public class DialogueManager : Singleton<DialogueManager>
         currentDialogueState = DialogueState.OPEN;
 
         yield return new WaitForSeconds(0.15f);
+
     }
 
     public void CloseDialogue(Action callbackFunc)
@@ -356,7 +366,7 @@ public class DialogueManager : Singleton<DialogueManager>
         currentDialogueState = DialogueState.CLOSED;
 
         yield return new WaitForSeconds(0.15f);
-        dialoguePanel.SetActive(false);
+        //dialoguePanel.SetActive(false);
     }
 
 
@@ -377,4 +387,22 @@ public class DialogueManager : Singleton<DialogueManager>
         audioSource.Play();
     }
 
+    public void MoveDialoguePainelUp()
+    {
+        ChangeDialoguePanelVerticalPosition(dialoguePainelUpperVerticalPosition);
+    }
+
+    public void MoveDialoguePainelDown()
+    {
+        ChangeDialoguePanelVerticalPosition(dialoguePainelBottomVerticalPosition);
+    }
+
+
+    public void ChangeDialoguePanelVerticalPosition(float newVerticalPosition)
+    {
+
+        Vector3 currentPosition = dialoguePanel.transform.localPosition;
+        Vector3 newPosition = new Vector3(currentPosition.x, newVerticalPosition, currentPosition.z);
+        dialoguePanel.transform.localPosition = newPosition;
+    }
 }
