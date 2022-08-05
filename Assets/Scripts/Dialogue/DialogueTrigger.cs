@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    [SerializeField] private TextAsset _inkDialogue;
-    [SerializeField] private int _startIndex = 0;
-    [SerializeField] private int _finalIndex = 9999;
+    private TextAsset _inkDialogue;
+    private int _startIndex = 0;
+    private int _finalIndex = 9999;
 
     /**
     private void OnTriggerEnter2D(Collider2D collision)
@@ -27,6 +27,7 @@ public class DialogueTrigger : MonoBehaviour
 
     public void StartDialogue()
     {
+        Debug.Log("startDialogue with startIndex = " + _startIndex + " and finalIndex = " + _finalIndex);
         Dialogue dialogue = new Dialogue(_inkDialogue, _startIndex, _finalIndex);
         DialogueManager.Instance.InitDialogue(dialogue);
         DialogueManager.Instance.StartDialogue();

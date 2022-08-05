@@ -26,21 +26,21 @@ public class PlayerShooterControl : MonoBehaviour
 
     private void MoveOnSwipe(SwipeData swipeData)
     {
-        if(canMoveUp && swipeData.Direction == SwipeDirection.Up)
+        if(canMoveUp && swipeData.Direction == Direction.Up)
         {
             PerformMovement(Vector3.up);
         }
-        else if (canMoveDown && swipeData.Direction == SwipeDirection.Down)
+        else if (canMoveDown && swipeData.Direction == Direction.Down)
         {
             PerformMovement(Vector3.down);
         }
 
 
-        if(canMoveLeft && swipeData.Direction == SwipeDirection.Left)
+        if(canMoveLeft && swipeData.Direction == Direction.Left)
         {
             PerformMovement(Vector3.left);
         }
-        else if(canMoveRight && swipeData.Direction == SwipeDirection.Right)
+        else if(canMoveRight && swipeData.Direction == Direction.Right)
         {
             PerformMovement(Vector3.right);
         }

@@ -56,15 +56,15 @@ public class PlayerGFX : MonoBehaviour
     // Atualiza a animação de acordo com o movimento
     private void UpdateAnimator()
     {
-        if (Mathf.Approximately(moveArray.x, 0.0f) && Mathf.Approximately(moveArray.y, 0.0f))
+        /*if (Mathf.Approximately(moveArray.x, 0.0f) && Mathf.Approximately(moveArray.y, 0.0f))
         {
-            animator.SetBool("Walking", false);
+            animator.SetBool("isWalking", false);
         }
         else
         {
-            animator.SetBool("Walking", true);
+            animator.SetBool("isWalking", true);
             animator.SetFloat("xDirection", moveArray.x);
             animator.SetFloat("yDirection", moveArray.y);
-        }
+        }*/
     }
 }

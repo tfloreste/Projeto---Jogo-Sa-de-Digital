@@ -8,4 +8,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Village_OpenAssets.unity
+    guid: 2b627c3ed08194641a85b306cbe88d71
+  - enabled: 1
+    path: Assets/Scenes/School.unity
+    guid: 2f4788a1f7c2e8144ab728d91b869b96
+  - enabled: 1
+    path: Assets/Scenes/HouseIndoors.unity
+    guid: 98ad79086c9ad6c49b97b2a505b1b6a5
   m_configObjects: {}
