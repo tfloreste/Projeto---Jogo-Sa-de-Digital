@@ -9,7 +9,7 @@ public class SpawnerPlane : MonoBehaviour
         Debug.Log("OnTriggerEnter2D fired");
         if (collision.gameObject.CompareTag("PlataformEndPosition"))
         {
-            PlataformSpawner.GetInstance().SpawnRandomPlataform(collision.transform.position);
+            PlataformSpawner.Instance.SpawnRandomPlataform(collision.transform.position);
         }
     }
 }

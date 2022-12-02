@@ -52,8 +52,14 @@ public class DialogueManager : Singleton<DialogueManager>
         dialoguePanel.transform.localScale = new Vector3(0, 0, 0);
     }
 
-    private IEnumerator ExitDialogueMode()
+    public void ExitDialogueMode()
     {
+        StartCoroutine(ExitDialogueModeCO());
+    }
+
+    private IEnumerator ExitDialogueModeCO()
+    {
+        Debug.Log("Exiting dialogue started");
         //yield return InputDelay();
     
         //dialoguePanel.SetActive(false);
@@ -63,6 +69,7 @@ public class DialogueManager : Singleton<DialogueManager>
             yield return CloseDialogue();
     
         dialogEndedEvent?.Invoke();
+        Debug.Log("Exiting dialogue ended");
     }
 
     private bool PlayerInputDetected() => Input.touchCount > 0;
@@ -111,12 +118,14 @@ public class DialogueManager : Singleton<DialogueManager>
 
     public void InitDialogue(Dialogue dialogue)
     {
+        Debug.Log("Init dialogue started");
         currentDialogue = dialogue;
 
         //dialoguePanel.SetActive(true);
         //dialogueText.text = "";
 
         dialogueStartedEvent?.Invoke();
+        Debug.Log("Init dialogue ended");
     }
 
     public void StartDialogue()
@@ -125,6 +134,7 @@ public class DialogueManager : Singleton<DialogueManager>
         if (currentDialogue == null)
             return;
 
+        Debug.Log("before advancing dialogue");
         AdvanceDialogue();
     }
 
@@ -243,7 +253,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         if (!PrepareNextLine())
         {
-            StartCoroutine(ExitDialogueMode());
+            StartCoroutine(ExitDialogueModeCO());
             return false;
         }
 

@@ -8,6 +8,7 @@ TagManager:
   - Fly
   - PlataformEndPosition
   - Item
+  - Ground
   layers:
   - Default
   - TransparentFX

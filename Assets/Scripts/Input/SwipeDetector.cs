@@ -127,6 +127,7 @@ public struct SwipeData
     public Direction Direction;
 }
 
+[System.Serializable]
 public enum Direction
 {
     Up,

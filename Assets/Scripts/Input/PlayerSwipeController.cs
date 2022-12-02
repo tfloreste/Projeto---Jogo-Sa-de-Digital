@@ -10,6 +10,8 @@ public class PlayerSwipeController : MonoBehaviour
     private Rigidbody2D rigidbody2d = null;
     private Vector3 playerVelocity;
     private bool consumedSwipe = false;
+    private bool isInDialogue = false;
+    private bool isInCutscene = false;
 
     private void Awake()
     {
@@ -28,6 +30,9 @@ public class PlayerSwipeController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isInDialogue || isInCutscene)
+            return;
+
         if (consumedSwipe)
         {
             rigidbody2d.velocity = Vector3.zero;
@@ -39,6 +44,16 @@ public class PlayerSwipeController : MonoBehaviour
             rigidbody2d.velocity = playerVelocity * moveSpeed * Time.fixedDeltaTime;
             consumedSwipe = true;
         }
+    }
+
+    public void SetInDialogue(bool inDialogue)
+    {
+        isInDialogue = inDialogue;
+    }
+
+    public void SetInCutscene(bool InCutscene)
+    {
+        isInCutscene = InCutscene;
     }
 
     private void ProcessMovement(SwipeData swipeData)

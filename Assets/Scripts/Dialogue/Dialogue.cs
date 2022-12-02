@@ -64,10 +64,10 @@ public class Dialogue
         DialogueLineData thisLineData = new DialogueLineData();
         thisLineData.lineTextChunks = new List<DialogueChunkData>();
 
-        Debug.Log("get line at index: " + _currentIndex);
+        //Debug.Log("get line at index: " + _currentIndex);
         if (_partialDialogue && _currentIndex > _finalIndex)
         {
-            Debug.Log("reached final index: " + _finalIndex);
+            //Debug.Log("reached final index: " + _finalIndex);
             _currentLine = thisLineData;
             return thisLineData;
         }
@@ -85,7 +85,7 @@ public class Dialogue
                 if(thisLineData.actor == "" || thisLineData.actor == null)
                 {
                     string[] splitDialogue = dialogueText.Split(':');
-                    Debug.Log(splitDialogue);
+                    //Debug.Log(splitDialogue);
                     if(splitDialogue.Length > 1)
                     {
                         thisLineData.actor = splitDialogue[0];
@@ -114,7 +114,7 @@ public class Dialogue
         _currentIndex++;
         _currentLine = thisLineData;
 
-        Debug.Log("line at index: " + thisLineData.lineTextChunks[0].chunkText);
+        //Debug.Log("line at index: " + thisLineData.lineTextChunks[0].chunkText);
 
         return thisLineData;
     }

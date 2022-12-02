@@ -100,5 +100,12 @@ INCLUDE ../globals.ink
 {A_ACTOR}: Certo, você pode falar com ela então, mas com uma condição!
 {A_ACTOR}: Nós vamos jogar um jogo. Se você vencer você pode falar com ela. O que acha?
 
-{PLAYER_ACTOR}: Tudo bem então!
+{PLAYER_ACTOR}: Se essa é a condição então eu aceito!
+
+{A_ACTOR}: Podemos jogar aquele novo jogo de corrida com obstáculos, e quem conseguir mais pontos vence.
+
+{PLAYER_ACTOR}: Perfeito!
 {PLAYER_ACTOR}: Mas já aviso que estou bem disposto a ganhar esse jogo!
+
+{A_ACTOR}: Okay! Então vamos começar!
+

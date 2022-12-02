@@ -7,6 +7,7 @@ public class DestroyPlataformOnTrigger : MonoBehaviour
         if (collision.gameObject.CompareTag("PlataformEndPosition"))
         {
             Destroy(collision.gameObject.transform.parent.gameObject);
+            EndlessRunnerManager.Instance.PlataformDestroyed();
         }
     }
 }

@@ -134,7 +134,8 @@ public class DialogueBehaviour : PlayableBehaviour
 	private void CloseDialogue()
     {
 		dialogueClosed = true;
-		DialogueManager.Instance.CloseDialogue(null);
+		//DialogueManager.Instance.CloseDialogue(null);
+		DialogueManager.Instance.ExitDialogueMode();
 		InputManager.OnTouchStart -= CloseDialogue;
 	}
 
