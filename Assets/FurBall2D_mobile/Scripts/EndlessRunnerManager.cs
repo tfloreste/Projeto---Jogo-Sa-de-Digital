@@ -82,7 +82,7 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
         if (!gameStarted || gameOver)
             return;
 
-        if (playerRigidBody.velocity.y < 0.1f && !CanPlayerSurviveFall())
+        if (playerRigidBody.velocity.y < 0.15f && !CanPlayerSurviveFall())
         {
             gameOver = true;
             StartCoroutine(GameOverCO());
@@ -92,13 +92,11 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
     public void AddPlataform(GameObject plataform)
     {
         plataformList.Add(plataform);
-        Debug.Log("Added plataform: " + plataformList.Count);
     }
 
     public void PlataformDestroyed()
     {
         plataformList.RemoveAt(0);
-        Debug.Log("Removed plataform: " + plataformList.Count);
     }
 
     private void StartGame()
@@ -136,7 +134,6 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
 
         yield return new WaitForSeconds(1.5f);
         GameOverFadeCompleted();
-
     }
 
     private bool IsPlayerInCameraView()
@@ -164,38 +161,29 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
 
     private bool CanPlayerSurviveFall()
     {
-        Debug.Log("------------------CHECKING IF PLAYER CAN SURVIVE ---------------------");
         float playerYPos = player.transform.position.y;
-        Debug.Log("playerYPos: " + playerYPos);
 
         foreach(var plataform in plataformList)
         {
             if (!plataform)
                 continue;
 
-            Debug.Log("Plataforma " + plataform.name + " tem " + plataform.transform.childCount + " filhos");
             for(int i = 0; i < plataform.transform.childCount; i++)
             {
                 var child = plataform.transform.GetChild(i);
                 if (!child.CompareTag("Ground"))
                     continue;
 
-                Debug.Log("child " + child.name + " found on index: " + i);
                 Collider2D childCollider = child.GetComponent<Collider2D>();
                 if (!childCollider)
-                    continue;
+                    continue; 
 
-                Debug.Log("plataform Collider found at index: " + i);
-                Debug.Log("bounds min: " + childCollider.bounds.max);
-                Debug.Log("bounds max: " + childCollider.bounds.min);
-                Debug.Log("position: " + child.transform.position);
+                child.GetComponent<SpriteRenderer>().color = Color.red;
                 if (childCollider.bounds.min.y < playerYPos)
                     return true;
-
             }
         }
 
-        Debug.Log("PlayerCannotSurvive");
         return false;
     }
 

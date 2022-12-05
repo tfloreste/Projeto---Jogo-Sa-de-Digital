@@ -12,8 +12,10 @@ public class PlataformSpawner : Singleton<PlataformSpawner>
         if(plataformList != null && plataformList.Count > 0)
         {
             GameObject plataformToSpawn = plataformList[Random.Range(0, plataformList.Count)];
-            Instantiate(plataformToSpawn, position, Quaternion.identity);
-            EndlessRunnerManager.Instance.AddPlataform(plataformToSpawn);
+            GameObject plataformInstance = Instantiate(plataformToSpawn, 
+                position, Quaternion.identity);
+
+            EndlessRunnerManager.Instance.AddPlataform(plataformInstance);
         }
     }
 
