@@ -45,7 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   standardTypingDelay: 0.05
+  timeBetweenVoiceEffect: 0.15
+  dialoguePainelUpperVerticalPosition: 132
+  dialoguePainelBottomVerticalPosition: -115
   actorProvider: {fileID: 11400000, guid: b5485c7eacbceaa4682dd91c8ddcefe3, type: 2}
+  globalDialogueVariableJson: {fileID: 4900000, guid: 83e3edd7edd247e4fa1fc6e1de15a8a6, type: 3}
   dialoguePanel: {fileID: 0}
   dialoguePanelAnimator: {fileID: 0}
   characterName: {fileID: 0}

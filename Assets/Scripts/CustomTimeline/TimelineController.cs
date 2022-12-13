@@ -40,14 +40,17 @@ public class TimelineController : MonoBehaviour, IDataPersistence
 
     private bool ConditionsMet()
     {
+        Debug.Log("Checking conditions for " + gameObject.name);
         if (ignoreConditions)
             return true;
 
+        Debug.Log("thisCondition for " + gameObject.name + " is '" + thisCondition.name + "' with value: " + thisCondition.value);
         if (playOnlyOnce && thisCondition && thisCondition.value)
             return false;
 
         foreach(BoolVariable condition in necessaryConditions)
         {
+            Debug.Log("condition '" + condition.name + "' for " + gameObject.name + " has value: " + condition.value);
             if (!condition.value)
                 return false;
         }

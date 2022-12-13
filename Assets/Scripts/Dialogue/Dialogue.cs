@@ -35,6 +35,7 @@ public class Dialogue
     private int _startIndex;
     private int _finalIndex;
     private int _currentIndex;
+    private DialogueVariables _dialogueVariables;
 
     // INK TAGS
     private const string NAME_TAG = "name";
@@ -114,9 +115,16 @@ public class Dialogue
         _currentIndex++;
         _currentLine = thisLineData;
 
-        //Debug.Log("line at index: " + thisLineData.lineTextChunks[0].chunkText);
-
         return thisLineData;
+    }
+
+    public void SetDialogueVariablesInstance(DialogueVariables dialogueVariables)
+    {
+        Debug.Log("setting dialogueVariable instance");
+        _dialogueVariables = dialogueVariables;
+
+        if(_inkStory != null)
+            _dialogueVariables.StartListening(_inkStory);
     }
 
     public DialogueLineData GetCurrentLine()
@@ -199,5 +207,11 @@ public class Dialogue
     {
         _inkStory = new Story(inkAsset.text);
         _inkTextAsset = inkAsset;
+    }
+
+    public void FinishInkDialogue()
+    {
+        if(_dialogueVariables != null)
+            _dialogueVariables.StopListening(_inkStory);
     }
 }

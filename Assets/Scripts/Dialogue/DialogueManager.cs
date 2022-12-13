@@ -8,7 +8,7 @@ using Ink.Runtime;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class DialogueManager : Singleton<DialogueManager>
+public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
 {
     [Header("Params")]
     [SerializeField] private float standardTypingDelay = 0.05f;
@@ -18,6 +18,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     [Header("Data")]
     [SerializeField] private DialogueActorProvider actorProvider = null;
+    [SerializeField] private TextAsset globalDialogueVariableJson = null;
 
     [Header("Dialogue UI")]
     [SerializeField] private GameObject dialoguePanel;
@@ -36,19 +37,26 @@ public class DialogueManager : Singleton<DialogueManager>
     private string currentActorName = null;
     private AudioClip currentActorVoice = null;
     private AudioSource audioSource = null;
+    private DialogueVariables dialogueVariables = null;
 
     private enum DialogueState { OPEN, CLOSED };
     private DialogueState currentDialogueState;
     private bool actorChanged = false;
     private bool completedTypingByTouch = false;
 
+    private void Awake()
+    {
+        currentDialogueState = DialogueState.CLOSED;
+        dialogueVariables = new DialogueVariables(globalDialogueVariableJson);
+
+
+    }
     private void Start()
     {
         dialoguePanel.SetActive(false);
         typingDelay = standardTypingDelay;
         audioSource = GetComponent<AudioSource>();
 
-        currentDialogueState = DialogueState.CLOSED;
         dialoguePanel.transform.localScale = new Vector3(0, 0, 0);
     }
 
@@ -61,10 +69,12 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         Debug.Log("Exiting dialogue started");
         //yield return InputDelay();
-    
+
         //dialoguePanel.SetActive(false);
         //dialogueText.text = "";
+        currentDialogue.FinishInkDialogue();
         currentDialogue = null;
+
         if (currentDialogueState == DialogueState.OPEN)
             yield return CloseDialogue();
     
@@ -120,6 +130,7 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         Debug.Log("Init dialogue started");
         currentDialogue = dialogue;
+        currentDialogue.SetDialogueVariablesInstance(dialogueVariables);
 
         //dialoguePanel.SetActive(true);
         //dialogueText.text = "";
@@ -414,5 +425,32 @@ public class DialogueManager : Singleton<DialogueManager>
         Vector3 currentPosition = dialoguePanel.transform.localPosition;
         Vector3 newPosition = new Vector3(currentPosition.x, newVerticalPosition, currentPosition.z);
         dialoguePanel.transform.localPosition = newPosition;
+    }
+
+    public void LoadData(GameData data)
+    {
+        Debug.Log("DialogueManager loaddata fired");
+        if (dialogueVariables != null && data.dialogueVariablesJsonState != "")
+            dialogueVariables.LoadJsonState(data.dialogueVariablesJsonState);
+    }
+
+    public void SaveData(GameData data)
+    {
+        if(dialogueVariables != null)
+            data.dialogueVariablesJsonState = dialogueVariables.GetJsonState();
+    }
+
+    public void SetDialogueVariable<T>(string key, T value)
+    {
+        if (dialogueVariables != null)
+            dialogueVariables.SetVariable(key, value);
+    }
+
+    public T GetDialogueVariable<T>(string key)
+    {
+        if (dialogueVariables != null)
+            return dialogueVariables.GetVariable<T>(key);
+
+        return default(T);
     }
 }
