@@ -24020,6 +24020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e752be4eefc2944f843b4eb283e4f19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreConditions: 0
   necessaryConditions:
   - {fileID: 11400000, guid: c50a002bbaf34e24ebaa779c18896005, type: 2}
   thisCondition: {fileID: 11400000, guid: 01a4f97b28c0ec94399c34a8c8a6b257, type: 2}
@@ -24030,6 +24031,8 @@ MonoBehaviour:
   - {fileID: 416777689}
   cutsceneStartedEvent: {fileID: 11400000, guid: 5a4317d468f93754ab3cab685b02f42b, type: 2}
   cutsceneEndedEvent: {fileID: 11400000, guid: 14af7480061963642bf38ac8d42fe5f3, type: 2}
+  setCutsceneIndexOnInk: 1
+  cutsceneIndex: 4
 --- !u!114 &1745183698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32913,12 +32916,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e752be4eefc2944f843b4eb283e4f19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreConditions: 0
   necessaryConditions: []
   thisCondition: {fileID: 11400000, guid: e0e3ab3acadae3e42bbdd81aa5b21c4e, type: 2}
   playOnlyOnce: 1
   _animatorsToControlUntilEnd: []
   cutsceneStartedEvent: {fileID: 11400000, guid: 5a4317d468f93754ab3cab685b02f42b, type: 2}
   cutsceneEndedEvent: {fileID: 11400000, guid: 14af7480061963642bf38ac8d42fe5f3, type: 2}
+  setCutsceneIndexOnInk: 1
+  cutsceneIndex: 0
 --- !u!114 &1987237634
 MonoBehaviour:
   m_ObjectHideFlags: 0

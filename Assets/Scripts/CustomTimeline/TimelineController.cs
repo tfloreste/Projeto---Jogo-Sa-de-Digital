@@ -19,6 +19,12 @@ public class TimelineController : MonoBehaviour, IDataPersistence
     [SerializeField] private GameEvent cutsceneStartedEvent;
     [SerializeField] private GameEvent cutsceneEndedEvent;
 
+    [Header("Main Cutscenes Params")]
+    [SerializeField] private bool setCutsceneIndexOnInk = false;
+    [SerializeField] private int cutsceneIndex = 0;
+
+    private const string lastCutscenePlayedVarName = "last_finished_cutscene";
+
     //[SerializeField] private Animator[] _animatorsToControlUntilPause;
 
     private PlayableDirector _director = null;
@@ -100,6 +106,10 @@ public class TimelineController : MonoBehaviour, IDataPersistence
             thisCondition.value = true;
             DataPersistenceManager.instance.SaveGame();
         }
+
+        if (setCutsceneIndexOnInk && DialogueManager.Instance)
+            DialogueManager.Instance.SetDialogueVariable<int>(lastCutscenePlayedVarName, cutsceneIndex);
+            
 
         _isPlaying = false;
         cutsceneEndedEvent?.Invoke();

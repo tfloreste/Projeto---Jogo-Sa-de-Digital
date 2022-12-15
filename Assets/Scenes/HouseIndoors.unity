@@ -924,6 +924,8 @@ MonoBehaviour:
   - {fileID: 149234147}
   cutsceneStartedEvent: {fileID: 11400000, guid: 5a4317d468f93754ab3cab685b02f42b, type: 2}
   cutsceneEndedEvent: {fileID: 11400000, guid: 14af7480061963642bf38ac8d42fe5f3, type: 2}
+  setCutsceneIndexOnInk: 1
+  cutsceneIndex: 5
 --- !u!320 &383283702
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -5971,6 +5973,8 @@ MonoBehaviour:
   - {fileID: 149234147}
   cutsceneStartedEvent: {fileID: 11400000, guid: 5a4317d468f93754ab3cab685b02f42b, type: 2}
   cutsceneEndedEvent: {fileID: 11400000, guid: 14af7480061963642bf38ac8d42fe5f3, type: 2}
+  setCutsceneIndexOnInk: 1
+  cutsceneIndex: 2
 --- !u!114 &1033612296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6468,6 +6472,8 @@ MonoBehaviour:
   - {fileID: 149234147}
   cutsceneStartedEvent: {fileID: 11400000, guid: 5a4317d468f93754ab3cab685b02f42b, type: 2}
   cutsceneEndedEvent: {fileID: 11400000, guid: 14af7480061963642bf38ac8d42fe5f3, type: 2}
+  setCutsceneIndexOnInk: 1
+  cutsceneIndex: 3
 --- !u!320 &1199815971
 PlayableDirector:
   m_ObjectHideFlags: 0

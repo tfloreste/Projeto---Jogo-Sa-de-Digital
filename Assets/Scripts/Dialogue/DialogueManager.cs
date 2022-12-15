@@ -13,7 +13,7 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
     [Header("Params")]
     [SerializeField] private float standardTypingDelay = 0.05f;
     [SerializeField] private float timeBetweenVoiceEffect = 0.15f;
-    [SerializeField] private float dialoguePainelUpperVerticalPosition  = 132.0f;
+    [SerializeField] private float dialoguePainelUpperVerticalPosition = 132.0f;
     [SerializeField] private float dialoguePainelBottomVerticalPosition = -115.0f;
 
     [Header("Data")]
@@ -29,6 +29,8 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
     [Header("Dialogue Events")]
     [SerializeField] private GameEvent dialogueStartedEvent;
     [SerializeField] private GameEvent dialogEndedEvent;
+
+    public bool isInDialogueMode = false;
 
     private float typingDelay;
     //private bool isNewSentenceLine = true;
@@ -77,8 +79,9 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
 
         if (currentDialogueState == DialogueState.OPEN)
             yield return CloseDialogue();
-    
+
         dialogEndedEvent?.Invoke();
+        isInDialogueMode = false;
         Debug.Log("Exiting dialogue ended");
     }
 
@@ -99,20 +102,20 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
         if (lineData.actor != "" && lineData.actor != null && actorProvider != null)
         {
             DialogueActor actor = actorProvider.GetActor(lineData.actor);
-            if(actor != null)
+            if (actor != null)
             {
                 newActorName = actor.actorName;
                 currentActorVoice = actor.voiceSoundEffect;
             }
-        } 
+        }
 
-        if(newActorName == "")
+        if (newActorName == "")
         {
             newActorName = lineData.actor;
         }
 
         actorChanged = (newActorName != currentActorName);
-        if(actorChanged)
+        if (actorChanged)
         {
             currentActorName = newActorName;
         }
@@ -141,11 +144,10 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
 
     public void StartDialogue()
     {
-        Debug.Log("StartDialogue fired");
         if (currentDialogue == null)
             return;
 
-        Debug.Log("before advancing dialogue");
+        isInDialogueMode = true;
         AdvanceDialogue();
     }
 
@@ -177,7 +179,7 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
         string currentText = "";
         int numVisibleChars = 0;
 
-        foreach(var lineChunk in lineData.lineTextChunks)
+        foreach (var lineChunk in lineData.lineTextChunks)
         {
             if (currentText != "")
                 currentText += " ";
@@ -204,7 +206,7 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
         dialogueText.maxVisibleCharacters = numVisibleChars;
         SetActorName(lineData);
 
-        if (currentDialogueState == DialogueState.CLOSED 
+        if (currentDialogueState == DialogueState.CLOSED
             || (actorChanged && Mathf.Approximately((float)elapsedTime, 0.0f)))
         {
             StartCoroutine(PerformDialogueUITransition());
@@ -233,8 +235,8 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
             float delay = standardTypingDelay;
             if (!ignoreTypingDelay && lineChunk.typingDelay > 0)
                 delay = lineChunk.typingDelay;
-            
-            totalTime += lineChunk.chunkText.Length  * delay;
+
+            totalTime += lineChunk.chunkText.Length * delay;
         }
 
         double elapsedTime = totalTime * progress;
@@ -276,9 +278,9 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
     private IEnumerator ShowLine(DialogueLineData lineData)
     {
         this.isTyping = true;
-        
+
         SetActorName(lineData);
-  
+
         //this.isNewSentenceLine = true;
         dialogueText.text = "";
 
@@ -312,9 +314,9 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
 
         foreach (char letter in sentence.ToCharArray())
         {
-           
+
             float timer = 0.0f;
-            while(true)
+            while (true)
             {
                 if (dialogueText.maxVisibleCharacters == dialogueText.text.Length)
                     break;
@@ -340,7 +342,7 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
             dialogueText.maxVisibleCharacters++;
         }
 
-        if(!completedTypingByTouch)
+        if (!completedTypingByTouch)
         {
             InputManager.OnTouchStart -= CompleteDialogueMessageOnTouch;
             InputManager.OnTouchStart += AdvanceDialogueOnTouch;
@@ -369,7 +371,7 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
     }
 
     public void CloseDialogue(Action callbackFunc)
-    {   
+    {
         // Condição para evitar erros
         if (!dialoguePanel.activeSelf)
             dialoguePanel.SetActive(true);
@@ -436,7 +438,7 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
 
     public void SaveData(GameData data)
     {
-        if(dialogueVariables != null)
+        if (dialogueVariables != null)
             data.dialogueVariablesJsonState = dialogueVariables.GetJsonState();
     }
 
@@ -453,4 +455,5 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
 
         return default(T);
     }
+
 }
