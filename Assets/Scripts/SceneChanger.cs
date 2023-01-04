@@ -18,6 +18,11 @@ public class SceneChanger : Singleton<SceneChanger>, IDataPersistence
         SceneManager.LoadScene(sceneName);
     }
 
+    public void ChangeToSceneWithoutSaving(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
     public void LoadData(GameData data)
     {
         // Nothing to load here

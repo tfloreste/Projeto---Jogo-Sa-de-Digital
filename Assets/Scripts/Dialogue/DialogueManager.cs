@@ -30,7 +30,7 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
     [SerializeField] private GameEvent dialogueStartedEvent;
     [SerializeField] private GameEvent dialogEndedEvent;
 
-    public bool isInDialogueMode = false;
+    [HideInInspector] public bool isInDialogueMode = false;
 
     private float typingDelay;
     //private bool isNewSentenceLine = true;
@@ -432,8 +432,10 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
     public void LoadData(GameData data)
     {
         Debug.Log("DialogueManager loaddata fired");
-        if (dialogueVariables != null && data.dialogueVariablesJsonState != "")
+        if (dialogueVariables != null && data.dialogueVariablesJsonState != null && data.dialogueVariablesJsonState != "")
             dialogueVariables.LoadJsonState(data.dialogueVariablesJsonState);
+
+        Debug.Log("DialogueManager loaddata completed");
     }
 
     public void SaveData(GameData data)

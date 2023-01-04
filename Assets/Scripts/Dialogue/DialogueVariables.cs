@@ -15,17 +15,23 @@ public class DialogueVariables
 
     public DialogueVariables(TextAsset loadGlobalsJSON)
     {
+        Debug.Log("DialogueVariables created start");
         // create the story
         globalVariablesStory = new Story(loadGlobalsJSON.text);
 
         // initialize the dictionary
         InitializeVariablesDictionary();
+        Debug.Log("DialogueVariables created finished");
     }
 
     public void LoadJsonState(string jsonState)
     {
+        Debug.Log("DialogueVariables LoadJsonState fired ");
+        Debug.Log(jsonState);
         globalVariablesStory.state.LoadJson(jsonState);
+        Debug.Log("DialogueVariables LoadJson completed");
         InitializeVariablesDictionary();
+        Debug.Log("Dictionary initialized completed");
     }
 
     public string GetJsonState()

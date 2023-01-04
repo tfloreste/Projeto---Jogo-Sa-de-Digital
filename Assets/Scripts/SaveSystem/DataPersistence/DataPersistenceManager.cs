@@ -81,14 +81,23 @@ public class DataPersistenceManager : MonoBehaviour
         LoadGame();
     }
 
-    public void DeleteProfileData(string profileId) 
+    public void DeleteProfileData(string profileId, bool callLoadGame) 
     {
         // delete the data for this profile id
         dataHandler.Delete(profileId);
         // initialize the selected profile id
         InitializeSelectedProfileId();
         // reload the game so that our data matches the newly selected profile id
-        LoadGame();
+        if(callLoadGame)
+            LoadGame();
+    }
+
+    public void DeleteCurrentProfileData()
+    {
+        if (this.selectedProfileId == "")
+            return;
+
+        this.DeleteProfileData(this.selectedProfileId, false);
     }
 
     private void InitializeSelectedProfileId() 

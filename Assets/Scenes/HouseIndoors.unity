@@ -310,11 +310,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a348c7cf4ebb8cc4faa41c9ed67c9ac5, type: 3}
---- !u!95 &149234147 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 4726828756006065527, guid: 47fbe4956541360498c62837d2634f71, type: 3}
-  m_PrefabInstance: {fileID: 706888244}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &212893899 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6063580955594935140, guid: f49be27a1b402ca42b8383af00373ffc, type: 3}
@@ -848,6 +843,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 309470761}
+          m_TargetAssemblyTypeName: SceneChanger, Assembly-CSharp
+          m_MethodName: ChangeToSceneWithoutSaving
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Ending
+            m_BoolArgument: 0
+          m_CallState: 2
     - m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 383283702}
@@ -914,14 +921,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e752be4eefc2944f843b4eb283e4f19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreConditions: 0
+  ignoreConditions: 1
   necessaryConditions:
   - {fileID: 11400000, guid: 01a4f97b28c0ec94399c34a8c8a6b257, type: 2}
   thisCondition: {fileID: 11400000, guid: 4eecfa4a4ec2749458a35bcbea7aebab, type: 2}
   playOnlyOnce: 1
   _animatorsToControlUntilEnd:
   - {fileID: 114129466}
-  - {fileID: 149234147}
+  - {fileID: 1624011803}
   cutsceneStartedEvent: {fileID: 11400000, guid: 5a4317d468f93754ab3cab685b02f42b, type: 2}
   cutsceneEndedEvent: {fileID: 11400000, guid: 14af7480061963642bf38ac8d42fe5f3, type: 2}
   setCutsceneIndexOnInk: 1
@@ -946,9 +953,9 @@ PlayableDirector:
   - key: {fileID: 6647081613497436650, guid: 25f63f0d1ed722e40a9743b8c662ab82, type: 2}
     value: {fileID: 114129466}
   - key: {fileID: -8459624287579858081, guid: 25f63f0d1ed722e40a9743b8c662ab82, type: 2}
-    value: {fileID: 149234147}
+    value: {fileID: 1624011803}
   - key: {fileID: -3287505647408469982, guid: 25f63f0d1ed722e40a9743b8c662ab82, type: 2}
-    value: {fileID: 149234147}
+    value: {fileID: 1624011803}
   - key: {fileID: -646142090001920289, guid: 25f63f0d1ed722e40a9743b8c662ab82, type: 2}
     value: {fileID: 692706100}
   - key: {fileID: 9061161299134321308, guid: 25f63f0d1ed722e40a9743b8c662ab82, type: 2}
@@ -5074,7 +5081,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4726828756006065526, guid: 47fbe4956541360498c62837d2634f71, type: 3}
       propertyPath: m_Name
-      value: Alan
+      value: Alan_old
+      objectReference: {fileID: 0}
+    - target: {fileID: 4726828756006065526, guid: 47fbe4956541360498c62837d2634f71, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47fbe4956541360498c62837d2634f71, type: 3}
@@ -5442,7 +5453,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1033612292
 Transform:
   m_ObjectHideFlags: 0
@@ -5479,9 +5490,9 @@ PlayableDirector:
   - key: {fileID: 766103747644973827, guid: 679f320d13ece8f4e87c3106a4cf1441, type: 2}
     value: {fileID: 1835465807}
   - key: {fileID: 7597553729858245532, guid: 679f320d13ece8f4e87c3106a4cf1441, type: 2}
-    value: {fileID: 149234147}
+    value: {fileID: 1624011803}
   - key: {fileID: -1360075167857972573, guid: 679f320d13ece8f4e87c3106a4cf1441, type: 2}
-    value: {fileID: 149234147}
+    value: {fileID: 1624011803}
   - key: {fileID: 3520415971950972015, guid: 679f320d13ece8f4e87c3106a4cf1441, type: 2}
     value: {fileID: 114129466}
   - key: {fileID: -7393546388771396936, guid: 679f320d13ece8f4e87c3106a4cf1441, type: 2}
@@ -5970,7 +5981,7 @@ MonoBehaviour:
   playOnlyOnce: 1
   _animatorsToControlUntilEnd:
   - {fileID: 114129466}
-  - {fileID: 149234147}
+  - {fileID: 1624011803}
   cutsceneStartedEvent: {fileID: 11400000, guid: 5a4317d468f93754ab3cab685b02f42b, type: 2}
   cutsceneEndedEvent: {fileID: 11400000, guid: 14af7480061963642bf38ac8d42fe5f3, type: 2}
   setCutsceneIndexOnInk: 1
@@ -6215,7 +6226,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1199815967
 Transform:
   m_ObjectHideFlags: 0
@@ -6469,7 +6480,7 @@ MonoBehaviour:
   playOnlyOnce: 1
   _animatorsToControlUntilEnd:
   - {fileID: 114129466}
-  - {fileID: 149234147}
+  - {fileID: 1624011803}
   cutsceneStartedEvent: {fileID: 11400000, guid: 5a4317d468f93754ab3cab685b02f42b, type: 2}
   cutsceneEndedEvent: {fileID: 11400000, guid: 14af7480061963642bf38ac8d42fe5f3, type: 2}
   setCutsceneIndexOnInk: 1
@@ -6494,9 +6505,9 @@ PlayableDirector:
   - key: {fileID: 5994210206009517292, guid: e2ef7150ee35271408cc6b88ce035136, type: 2}
     value: {fileID: 114129466}
   - key: {fileID: 161709050327141382, guid: e2ef7150ee35271408cc6b88ce035136, type: 2}
-    value: {fileID: 149234147}
+    value: {fileID: 1624011803}
   - key: {fileID: 242893541911208019, guid: e2ef7150ee35271408cc6b88ce035136, type: 2}
-    value: {fileID: 149234147}
+    value: {fileID: 1624011803}
   - key: {fileID: -8106258775059813315, guid: e2ef7150ee35271408cc6b88ce035136, type: 2}
     value: {fileID: 1835465808}
   - key: {fileID: -7375495244234790933, guid: e2ef7150ee35271408cc6b88ce035136, type: 2}
@@ -9107,6 +9118,108 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 283407100829150267, guid: 0dd8f962f588c2448b5ca9a4c1bec031, type: 3}
   m_PrefabInstance: {fileID: 893631810}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1624011802
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1624011805}
+  - component: {fileID: 1624011804}
+  - component: {fileID: 1624011803}
+  m_Layer: 0
+  m_Name: Alan
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!95 &1624011803
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624011802}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: d0244d8b6e3f6fc42a4b1bf8dc03bd76, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!212 &1624011804
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624011802}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 3
+  m_Sprite: {fileID: 7338398544627520576, guid: 5b636eafcf6c38e4eb5bd7acacb4c622, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &1624011805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624011802}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.5, y: 0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1647030390
 GameObject:
   m_ObjectHideFlags: 0
@@ -9360,6 +9473,10 @@ PrefabInstance:
       propertyPath: dialoguePanel
       value: 
       objectReference: {fileID: 315606032}
+    - target: {fileID: 7746411894092809194, guid: 911508075091e14429e552654ff9598e, type: 3}
+      propertyPath: isInDialogueMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7746411894092809194, guid: 911508075091e14429e552654ff9598e, type: 3}
       propertyPath: dialoguePanelAnimator
       value: 
