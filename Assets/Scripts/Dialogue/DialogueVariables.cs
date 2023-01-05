@@ -69,17 +69,19 @@ public class DialogueVariables
             return default(T);
 
         Ink.Runtime.Object value = variables[key];
-     
+
         try
         {
-            return (T)Convert.ChangeType(value, typeof(T));
+            return (T)(value as Value).valueObject;
         }
-        catch (InvalidCastException)
+        catch (InvalidCastException e)
         {
+            Debug.LogWarning(e.Message);
             Debug.LogWarning("GetVariable changetype error with key '" + key + "' returning default value: " + default(T));
             return default(T);
         }
     }
+
 
     public void StartListening(Story story)
     {

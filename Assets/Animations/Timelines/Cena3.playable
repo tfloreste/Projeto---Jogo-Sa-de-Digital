@@ -15,7 +15,7 @@ MonoBehaviour:
   template:
     dialogueTextAsset: {fileID: 4900000, guid: 4f420c5806a21e94f84bc16a501cb72d, type: 3}
     hasToPause: 1
-    lineIndex: 5
+    lineIndex: 8
     progressBasedOnDuration: 0
     forceLinearTypingDelay: 0
     forceCloseOnFinish: 0

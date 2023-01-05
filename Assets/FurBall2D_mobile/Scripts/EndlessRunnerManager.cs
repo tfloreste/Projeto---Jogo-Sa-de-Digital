@@ -28,6 +28,12 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
     private List<GameObject> plataformList;
     private float increaseSpeedTimer;
 
+
+    private const string pointsToWinVariableName = "endless_runner_points_to_win";
+    private const string playerPointsVariableName = "endless_runner_points";
+    private const string playerWonVariableName = "player_won_endless_runner_game";
+    private int pointsToWin = 30;
+
     public bool gameStarted { get; private set; }
     public bool gameOver { get; private set; }
 
@@ -53,6 +59,9 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
         playerCollider = player.GetComponent<Collider2D>();
         playerRigidBody = player.GetComponent<Rigidbody2D>();
         InitatePlataformList();
+
+        pointsToWin = DialogueManager.Instance.GetDialogueVariable<int>(pointsToWinVariableName);
+        Debug.Log("pointsTowin: " + pointsToWin);
     }
 
     private void Update()
@@ -131,6 +140,15 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
         moveSpeed.value = 0;
         gameStarted = false;
         ScreenEffect.Instance.FadeOut(true);
+
+        int playerScore = ScoreManager.GetInstance().GetCurrentScore();
+        bool playerWon = playerScore >= pointsToWin;
+
+        Debug.Log("playerScore: " + playerScore);
+        Debug.Log("playerWon: " + playerWon);
+
+        DialogueManager.Instance.SetDialogueVariable(playerPointsVariableName, playerScore);
+        DialogueManager.Instance.SetDialogueVariable(playerWonVariableName, playerWon);
 
         yield return new WaitForSeconds(1.5f);
         GameOverFadeCompleted();

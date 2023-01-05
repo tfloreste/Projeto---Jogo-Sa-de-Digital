@@ -51,6 +51,11 @@ public class ScoreManager : MonoBehaviour
         SetScore(0);
     }
 
+    public int GetCurrentScore()
+    {
+        return this.score;
+    }
+
     private void UpdateScoreText()
     {
         if(scoreText != null)

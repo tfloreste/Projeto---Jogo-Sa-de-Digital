@@ -55,11 +55,14 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
     }
     private void Start()
     {
-        dialoguePanel.SetActive(false);
-        typingDelay = standardTypingDelay;
-        audioSource = GetComponent<AudioSource>();
+        if(dialoguePanel)
+        {
+            dialoguePanel.SetActive(false);
+            typingDelay = standardTypingDelay;
+            audioSource = GetComponent<AudioSource>();
 
-        dialoguePanel.transform.localScale = new Vector3(0, 0, 0);
+            dialoguePanel.transform.localScale = new Vector3(0, 0, 0);
+        }
     }
 
     public void ExitDialogueMode()

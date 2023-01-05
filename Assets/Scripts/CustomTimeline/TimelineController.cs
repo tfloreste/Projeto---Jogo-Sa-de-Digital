@@ -9,7 +9,8 @@ public class TimelineController : MonoBehaviour, IDataPersistence
 {
 
     [Header("Debug")]
-    [SerializeField] private bool ignoreConditions;
+    [SerializeField] private bool ignoreOtherConditions;
+    [SerializeField] private bool ignoreSelfCondition;
 
     [Header("Params")]
     [SerializeField] BoolVariable[] necessaryConditions;
@@ -37,7 +38,7 @@ public class TimelineController : MonoBehaviour, IDataPersistence
     {
         _director = GetComponent<PlayableDirector>();
 
-        if (!ignoreConditions && thisCondition && thisCondition.value)
+        if (!ignoreSelfCondition && thisCondition && thisCondition.value)
             gameObject.SetActive(false);
         else
             StartCoroutine(CheckConditions());
@@ -47,7 +48,7 @@ public class TimelineController : MonoBehaviour, IDataPersistence
     private bool ConditionsMet()
     {
         Debug.Log("Checking conditions for " + gameObject.name);
-        if (ignoreConditions)
+        if (ignoreOtherConditions)
             return true;
 
         Debug.Log("thisCondition for " + gameObject.name + " is '" + thisCondition.name + "' with value: " + thisCondition.value);

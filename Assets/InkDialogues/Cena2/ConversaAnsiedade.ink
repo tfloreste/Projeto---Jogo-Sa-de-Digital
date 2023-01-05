@@ -107,5 +107,9 @@ INCLUDE ../globals.ink
 {PLAYER_ACTOR}: Perfeito!
 {PLAYER_ACTOR}: Mas já aviso que estou bem disposto a ganhar esse jogo!
 
-{A_ACTOR}: Okay! Então vamos começar!
+{A_ACTOR}: Okay! Então vamos lá!
+{A_ACTOR}: Eu vou jogar primeiro e depois você joga.
 
+{A_ACTOR}: Ah! Não acredito! Pulei na hora errada!! Só consegui {endless_runner_points_to_won - 1} pontos!! Eu sempre consigo muito mais do que isso!
+{PLAYER_ACTOR}: Acho que isso facilita as coisas pra mim então!
+{PLAYER_ACTOR}: Se prepare para perder {a_name}!!!
