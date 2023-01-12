@@ -1,7 +1,7 @@
 INCLUDE globals.ink
 
 { last_finished_cutscene:
-- 0: -> para_casa_de_a
+- 1: -> para_casa_de_a
 - 3: -> para_escola
 - 4: -> retorno_casa_de_a
     

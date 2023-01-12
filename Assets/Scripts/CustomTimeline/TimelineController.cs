@@ -105,12 +105,12 @@ public class TimelineController : MonoBehaviour, IDataPersistence
         if (thisCondition)
         {
             thisCondition.value = true;
-            DataPersistenceManager.instance.SaveGame();
         }
 
         if (setCutsceneIndexOnInk && DialogueManager.Instance)
             DialogueManager.Instance.SetDialogueVariable<int>(lastCutscenePlayedVarName, cutsceneIndex);
-            
+
+        DataPersistenceManager.instance.SaveGame();
 
         _isPlaying = false;
         cutsceneEndedEvent?.Invoke();

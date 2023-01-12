@@ -6,41 +6,57 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuButtons : MonoBehaviour
 {
-    [SerializeField] private Button newGameButton;
-    [SerializeField] private Button continueButton;
+    [SerializeField] private MainMenuButton newGameButton;
+    [SerializeField] private MainMenuButton continueButton;
+
+    private bool buttonClicked = false;
 
     private void Start()
     {
         DisableButtonsDependingOnData();
+        ScreenEffect.Instance.FadeIn(false);
     }
 
     private void DisableButtonsDependingOnData()
     {
         if (!DataPersistenceManager.instance.HasGameData())
         {
-            continueButton.interactable = false;
+            continueButton.Disable();
         }
     }
 
     private void DisableAllButtons()
     {
-        newGameButton.interactable = false;
-        continueButton.interactable = false;
+        newGameButton.Disable();
+        continueButton.Disable();
     }
 
 
     public void OnNewGameClicked()
     {
-        DisableAllButtons();
+        if (buttonClicked)
+            return;
+
+        buttonClicked = true;
 
         DataPersistenceManager.instance.NewGame();
         DataPersistenceManager.instance.SaveGame();
-        SceneManager.LoadScene(DataPersistenceManager.instance.GetGameData().sceneName);
+        StartCoroutine(LoadGameSceneCO(DataPersistenceManager.instance.GetGameData().sceneName));
     }
 
     public void OnContinueClicked()
     {
-        DisableAllButtons();
-        SceneManager.LoadScene(DataPersistenceManager.instance.GetGameData().sceneName);
+        if (buttonClicked)
+            return;
+
+        buttonClicked = true;
+        StartCoroutine(LoadGameSceneCO(DataPersistenceManager.instance.GetGameData().sceneName));
+    }
+
+    private IEnumerator LoadGameSceneCO(string sceneName)
+    {
+        ScreenEffect.Instance.FadeOut(true);
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(sceneName);
     }
 }

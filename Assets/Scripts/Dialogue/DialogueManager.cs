@@ -443,12 +443,14 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
 
     public void SaveData(GameData data)
     {
+        Debug.Log("DialogueManager saving game");
         if (dialogueVariables != null)
             data.dialogueVariablesJsonState = dialogueVariables.GetJsonState();
     }
 
     public void SetDialogueVariable<T>(string key, T value)
     {
+        Debug.Log("DialogueManager setting ink variable: " + key + ": " + value);
         if (dialogueVariables != null)
             dialogueVariables.SetVariable(key, value);
     }
