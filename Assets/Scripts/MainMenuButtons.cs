@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuButtons : MonoBehaviour
 {
-    [SerializeField] private MainMenuButton newGameButton;
-    [SerializeField] private MainMenuButton continueButton;
+    [SerializeField] private CustomButton newGameButton;
+    [SerializeField] private CustomButton continueButton;
 
     private bool buttonClicked = false;
 

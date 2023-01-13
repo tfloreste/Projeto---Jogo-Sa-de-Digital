@@ -9,7 +9,7 @@ public class Quiz : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject quizPanel;
     [SerializeField] private TextMeshProUGUI questionText;
-    [SerializeField] private Button[] alternativeButtons;
+    [SerializeField] private CustomButton[] alternativeButtons;
 
     [Header("Audio")]
     [SerializeField] private AudioClip correctAnswerChosenClip;
@@ -26,18 +26,20 @@ public class Quiz : MonoBehaviour
     [SerializeField] private GameEvent quizEndedEvent;
 
     private int currentQuestionIndex;
-    private TextMeshProUGUI[] buttonsTexts;
+    private Text[] buttonsTexts;
     private Animator quizPanelAnimator;
+    private RectTransform quizPanelRectTransform;
 
     private void Start()
     {
-        buttonsTexts = new TextMeshProUGUI[alternativeButtons.Length];
+        buttonsTexts = new Text[alternativeButtons.Length];
         for (int i = 0; i < alternativeButtons.Length; i++)
         {
-            buttonsTexts[i] = alternativeButtons[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            buttonsTexts[i] = alternativeButtons[i].transform.GetChild(0).GetComponent<Text>();
         }
 
         quizPanelAnimator = quizPanel.GetComponent<Animator>();
+        quizPanelRectTransform = quizPanel.GetComponent<RectTransform>();
         quizPanel.SetActive(false);
         
         //StartQuiz();
@@ -45,10 +47,17 @@ public class Quiz : MonoBehaviour
 
     public void StartQuiz()
     {
-        Debug.Log("Quiz started");
+        if (!quizPanel.activeSelf)
+        {
+            quizPanelRectTransform.localScale = new Vector3(
+                0.0f, 
+                0.0f, 
+                quizPanelRectTransform.localScale.z
+            );
 
-        if(!quizPanel.activeSelf)
             quizPanel.SetActive(true);
+        }
+            
 
         if (quizPanelAnimator)
         {
@@ -59,7 +68,6 @@ public class Quiz : MonoBehaviour
 
         currentQuestionIndex = -1;
         ShowNextQuestion();
-        
     }
 
     public void CloseQuiz()
@@ -90,13 +98,13 @@ public class Quiz : MonoBehaviour
 
         for(int i = 0; i < alternativeButtons.Length; i++)
         {
-            alternativeButtons[i].interactable = true;
-            alternativeButtons[i].onClick.RemoveAllListeners();
+            alternativeButtons[i].Enable();
+            alternativeButtons[i].GetButtonInstance().onClick.RemoveAllListeners();
 
             if (i < currentQuestion.alternatives.Length)
             {
                 int selectedIndex = i;
-                alternativeButtons[i].onClick.AddListener(() => { ChooseAnswer(selectedIndex); });
+                alternativeButtons[i].GetButtonInstance().onClick.AddListener(() => { ChooseAnswer(selectedIndex); });
                 buttonsTexts[i].text = currentQuestion.alternatives[i];
 
                 if (!alternativeButtons[i].gameObject.activeSelf)
@@ -113,26 +121,21 @@ public class Quiz : MonoBehaviour
 
     public void ChooseAnswer(int index)
     {
-        Debug.Log("Choose answer at index " + index);
         if(questions[currentQuestionIndex].correctAnswerIndex == index)
         {
-            Debug.Log("Correct answer");
             if(correctAnswerChosenClip && SFXManager.GetInstance())
             {
-                Debug.Log("Playing clip");
                 SFXManager.GetInstance().PlayClip(correctAnswerChosenClip);
             }
         }
         else
         {
-            Debug.Log("Wrong asnwer");
             if (wrongAnswerChosenClip && SFXManager.GetInstance())
             {
-                Debug.Log("Playing clip");
                 SFXManager.GetInstance().PlayClip(wrongAnswerChosenClip);
             }
             if (chooseUntilGetTheRightAnswer)
-                alternativeButtons[index].interactable = false;
+                alternativeButtons[index].Disable();
 
             return;
         }
