@@ -294,7 +294,7 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
         {
             this.typingDelay = lineChunk.typingDelay > 0 ? lineChunk.typingDelay : standardTypingDelay;
             //yield return InputDelay();
-            yield return StartCoroutine(TypeSentence(lineChunk.chunkText));
+            yield return StartCoroutine(TypeSentence(lineChunk));
             //isNewSentenceLine = false;
         }
 
@@ -303,9 +303,10 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
     }
 
 
-    private IEnumerator TypeSentence(string sentence)
+    private IEnumerator TypeSentence(DialogueChunkData lineChunk)
     {
         int prevCharCount = dialogueText.text.Length;
+        string sentence = lineChunk.chunkText;
 
         dialogueText.text += sentence;
         dialogueText.maxVisibleCharacters = prevCharCount;
@@ -324,16 +325,22 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
                 if (dialogueText.maxVisibleCharacters == dialogueText.text.Length)
                     break;
 
-                if (voiceEffectTimer < 0 || voiceEffectTimer >= timeBetweenVoiceEffect)
+                if (lineChunk.playVoiceSound) 
                 {
-                    PlayActorVoice();
-                    voiceEffectTimer = 0.0f;
+                    bool canPlayVoice = (voiceEffectTimer < 0 || voiceEffectTimer >= timeBetweenVoiceEffect);
+                    if(canPlayVoice)
+                    {
+                        PlayActorVoice();
+                        voiceEffectTimer = 0.0f;
+                    }
                 }
 
                 yield return null;
 
                 timer += Time.deltaTime;
-                voiceEffectTimer += Time.deltaTime;
+
+                if (lineChunk.playVoiceSound)
+                    voiceEffectTimer += Time.deltaTime;
 
                 if (timer >= this.typingDelay)
                     break;

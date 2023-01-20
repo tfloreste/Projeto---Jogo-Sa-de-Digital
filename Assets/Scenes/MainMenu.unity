@@ -675,7 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c817de527e6a4fe4ebc108537a25c148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonPressedSound: {fileID: 8300000, guid: 3c072c9556a02bd4b8dd5a85c0d79db0, type: 3}
+  buttonPressedSound: {fileID: 8300000, guid: 38c84e19c2b1ec9449f4383fdb1a5aff, type: 3}
 --- !u!1 &468224949
 GameObject:
   m_ObjectHideFlags: 0
@@ -1356,6 +1356,7 @@ MonoBehaviour:
   direction: 0
   sceneName: 
   startPositionData: {fileID: 0}
+  isDoor: 0
 --- !u!4 &772996781
 Transform:
   m_ObjectHideFlags: 0
@@ -2248,7 +2249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c817de527e6a4fe4ebc108537a25c148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonPressedSound: {fileID: 8300000, guid: 3c072c9556a02bd4b8dd5a85c0d79db0, type: 3}
+  buttonPressedSound: {fileID: 8300000, guid: 38c84e19c2b1ec9449f4383fdb1a5aff, type: 3}
 --- !u!1 &1631360762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2556,7 +2557,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96

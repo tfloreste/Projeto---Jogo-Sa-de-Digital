@@ -1,0 +1,1 @@
+Tereza: O dia de hoje está muito bonito!

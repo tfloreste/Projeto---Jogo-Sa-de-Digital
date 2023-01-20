@@ -12,6 +12,7 @@ public class PlayerSwipeController : MonoBehaviour
     private bool consumedSwipe = false;
     private bool isInDialogue = false;
     private bool isInCutscene = false;
+    private bool movementBlocked = false;
 
     private void Awake()
     {
@@ -30,8 +31,12 @@ public class PlayerSwipeController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isInDialogue || isInCutscene)
+        if (isInDialogue || isInCutscene || movementBlocked)
+        {
+            rigidbody2d.velocity = Vector3.zero;
+            animator.SetBool("isWalking", false);
             return;
+        }
 
         if (consumedSwipe)
         {
@@ -56,8 +61,23 @@ public class PlayerSwipeController : MonoBehaviour
         isInCutscene = InCutscene;
     }
 
+    public void BlockMovement()
+    {
+        movementBlocked = true;
+    }
+
+    public void UnblockMovement()
+    {
+        movementBlocked = false;
+    }
+
     private void ProcessMovement(SwipeData swipeData)
     {
+        if (isInDialogue || isInCutscene || movementBlocked)
+        {
+            return;
+        }
+
         consumedSwipe = false;
 
         float xDirection = 0f;

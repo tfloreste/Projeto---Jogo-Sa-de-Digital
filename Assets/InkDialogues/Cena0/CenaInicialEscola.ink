@@ -9,7 +9,7 @@ INCLUDE ../globals.ink
 {PROFESSOR_ACTOR}: Antes de começarmos, gostaria de apresentar a nova colega de classe de vocês! 
 {PROFESSOR_ACTOR}: Seja bem-vinda {b_name}! 
 
-{B_ACTOR}: ...  
+{B_ACTOR}: ... #mute_line
 
 
 {PLAYER_ACTOR}: (Por que será que a aluna nova está usando uma blusa? Hoje está realmente bem quente)
@@ -17,15 +17,16 @@ INCLUDE ../globals.ink
 {PROFESSOR_ACTOR}: {b_name}, como eu disse antes, hoje teremos uma prova, mas como é seu primeiro dia não precisa se preocupar. 
 {PROFESSOR_ACTOR}: Não contarei essa nota na sua média, entretanto gostaria que você fizesse o teste mesmo assim. Tudo bem?  
 
-{B_ACTOR}: ...  
+{B_ACTOR}: ... #mute_line
 {B_ACTOR}: Okay. 
 
  
 
 {PROFESSOR_ACTOR}: Perfeito! 
-{PROFESSOR_ACTOR}: Você pode sentar naquela última carteira vazia! No canto perto da janela.
+{PROFESSOR_ACTOR}: Você pode sentar em alguma carteira vazia de sua preferência.
 {PROFESSOR_ACTOR}: Imagino que todos estejam ansiosos para conhecer melhor a aluna nova, mas vocês terão mais tempo para isto em breve.  
 {PROFESSOR_ACTOR}: Antes de começarmos a prova, alguém tem alguma pergunta? 
+{PROFESSOR_ACTOR}: ... #mute_line
 {PROFESSOR_ACTOR}: Não?
 {PROFESSOR_ACTOR}: Bem, acho que podemos começar a prova então!  
 

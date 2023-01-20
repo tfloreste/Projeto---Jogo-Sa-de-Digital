@@ -4,7 +4,7 @@ INCLUDE globals.ink
 - 1: -> para_casa_de_a
 - 3: -> para_escola
 - 4: -> retorno_casa_de_a
-    
+- else: -> developer_message
 }
 
 === para_casa_de_a ===
@@ -19,4 +19,9 @@ INCLUDE globals.ink
 
 === retorno_casa_de_a ===
 {PLAYER_ACTOR}: Agora que eu tirei algumas das dúvidas que tinha sobre ansiedade, preciso voltar para a casa do {a_name} falar com ele.
+-> END
+
+=== developer_message ===
+Desenvolvedor: Oh! Parece que alguma coisa errada aconteceu.
+Desenvolvedor: Você realmente não deveria poder clicar nesse botão neste momento. Sinto muito!
 -> END

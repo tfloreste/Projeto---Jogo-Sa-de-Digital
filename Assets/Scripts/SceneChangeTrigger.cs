@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,9 @@ public class SceneChangeTrigger : MonoBehaviour, IDataPersistence
     [SerializeField] private string sceneName;
     [SerializeField] private StartingPositionData startPositionData;
 
+    [Header("Data")]
+    [SerializeField] private bool isDoor = false;
+
     private bool instanceTriggered;
 
     private void OnEnable()
@@ -23,28 +27,29 @@ public class SceneChangeTrigger : MonoBehaviour, IDataPersistence
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            ChangeScene();
+            if(collision.TryGetComponent(out PlayerSwipeController playerController))
+                playerController.BlockMovement();
+            
+            ChangeScene(true);
         }
     }
 
-    public void ChangeScene()
+    public void ChangeScene(bool performFadeEffect)
     {
         instanceTriggered = true;
         //SetStartPositionData();
         DataPersistenceManager.instance.SaveGame();
-        LoadNextScene();
+        StartCoroutine(LoadNextScene(performFadeEffect));
     }
 
-    private void SetStartPositionData()
+    private IEnumerator LoadNextScene(bool performFadeEffect)
     {
-        startPositionData.SetPosition(position);
-        startPositionData.SetPosition(gameObjectName);
-        startPositionData.SetDirection(direction);
-    }
-
-
-    private void LoadNextScene()
-    {
+        if (performFadeEffect)
+        {
+            ScreenEffect.Instance.FadeOut(true);
+            yield return new WaitForSeconds(1.5f);
+        }
+        
         SceneManager.LoadScene(sceneName);
     }
 

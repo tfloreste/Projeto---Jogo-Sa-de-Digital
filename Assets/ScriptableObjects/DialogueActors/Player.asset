@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   id: player
-  actorName: Player
+  actorName: Bryan
   voiceSoundEffect: {fileID: 8300000, guid: 4744f00e5faa2dd46afcc1fb13f11163, type: 3}

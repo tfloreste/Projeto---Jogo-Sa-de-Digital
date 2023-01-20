@@ -10,8 +10,9 @@ public class HelperButton : MonoBehaviour
     private Image btnImage;
     private Text btnText;
 
-    private void Start()
+    private void Awake()
     {
+        Debug.Log("helperBtn start fired");
         btnImage = GetComponent<Image>();
         btnText = transform.GetChild(0).GetComponent<Text>();
     }

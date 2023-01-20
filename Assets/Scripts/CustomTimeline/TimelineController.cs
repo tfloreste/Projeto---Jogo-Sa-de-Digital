@@ -17,6 +17,7 @@ public class TimelineController : MonoBehaviour, IDataPersistence
     [SerializeField] BoolVariable thisCondition;
     [SerializeField] bool playOnlyOnce = true;
     [SerializeField] private Animator[] _animatorsToControlUntilEnd;
+    [SerializeField] private Collider2D[] collidersToDisable;
     [SerializeField] private GameEvent cutsceneStartedEvent;
     [SerializeField] private GameEvent cutsceneEndedEvent;
 
@@ -67,9 +68,17 @@ public class TimelineController : MonoBehaviour, IDataPersistence
 
     public void StartTimeline()
     {
-        Debug.Log("timeline " + this.name + " started");
         //_animatorsDictionary = new Dictionary<string, Animator>();
         _animatorControllerDictionary = new Dictionary<string, RuntimeAnimatorController>();
+        
+        if(collidersToDisable != null)
+        {
+            foreach (Collider2D collider in collidersToDisable)
+            {
+                collider.enabled = false;
+            }
+        }
+
         SaveAnimatorsControllers(_animatorsToControlUntilEnd);
         //SaveAnimatorsControllers(_animatorsToControlUntilPause);
         // AddAnimatorsToCache();
@@ -99,6 +108,12 @@ public class TimelineController : MonoBehaviour, IDataPersistence
     {
         if (!_isPlaying)
             return;
+
+        if (collidersToDisable != null)
+        {
+            foreach (Collider2D collider in collidersToDisable)
+                collider.enabled = true;
+        }
 
         RestoreAnimatorsOnStop();
 

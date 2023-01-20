@@ -11,6 +11,7 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
     [SerializeField] private float maxSpeed = 20.0f;
     [SerializeField] private float increaseSpeedInterval = 10.0f;
     [SerializeField] private float increaseSpeedStep = 1.0f;
+    [SerializeField] private float notInCameraViewTotalTime = 1.0f;
 
     [Header("Required References")]
     [SerializeField] private FloatVariable moveSpeed;
@@ -27,13 +28,14 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
     private Plane[] planes;
     private List<GameObject> plataformList;
     private float increaseSpeedTimer;
+    private float currentTimeNotInCameraView = 0.0f;
 
 
     private const string pointsToWinVariableName = "endless_runner_points_to_win";
     private const string playerPointsVariableName = "endless_runner_points";
     private const string playerWonVariableName = "player_won_endless_runner_game";
-    private int pointsToWin = 30;
-
+    
+    public int pointsToWin { get; private set; } = 30;
     public bool gameStarted { get; private set; }
     public bool gameOver { get; private set; }
 
@@ -61,7 +63,7 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
         InitatePlataformList();
 
         pointsToWin = DialogueManager.Instance.GetDialogueVariable<int>(pointsToWinVariableName);
-        Debug.Log("pointsTowin: " + pointsToWin);
+        currentTimeNotInCameraView = 0.0f;
     }
 
     private void Update()
@@ -81,8 +83,17 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
 
         if (!IsPlayerInCameraView())
         {
-            gameOver = true;
-            StartCoroutine(GameOverCO());
+            currentTimeNotInCameraView += Time.deltaTime;
+
+            if(currentTimeNotInCameraView > notInCameraViewTotalTime)
+            {
+                gameOver = true;
+                StartCoroutine(GameOverCO());
+            }
+        }
+        else
+        {
+            currentTimeNotInCameraView = 0.0f;
         }
     }
 
@@ -144,14 +155,12 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
         int playerScore = ScoreManager.GetInstance().GetCurrentScore();
         bool playerWon = playerScore >= pointsToWin;
 
-        Debug.Log("playerScore: " + playerScore);
-        Debug.Log("playerWon: " + playerWon);
 
         DialogueManager.Instance.SetDialogueVariable(playerPointsVariableName, playerScore);
         DialogueManager.Instance.SetDialogueVariable(playerWonVariableName, playerWon);
 
         yield return new WaitForSeconds(1.5f);
-        GameOverFadeCompleted();
+        //GameOverFadeCompleted();
     }
 
     private bool IsPlayerInCameraView()

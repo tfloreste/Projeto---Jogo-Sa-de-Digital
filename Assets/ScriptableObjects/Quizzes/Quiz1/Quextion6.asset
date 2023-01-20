@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   question: O que faz um psiquiatra?
   alternatives:
-  - "Auxiliam indiv\xEDduos a compreenderem melhor a si mesmos, e lidarem com determinadas
-    dificuldades por meio de psicoterapia. "
-  - "Se preocupa com a parte mais biol\xF3gica dos transtornos mentais, podendo receitar
+  - "Se preocupa com a parte biol\xF3gica dos transtornos mentais, podendo receitar
     rem\xE9dios se necess\xE1rio."
+  - "Auxiliam indiv\xEDduos a compreenderem melhor a si mesmos, e lidarem com determinadas
+    dificuldades por meio de psicoterapia."
   correctAnswerIndex: 1

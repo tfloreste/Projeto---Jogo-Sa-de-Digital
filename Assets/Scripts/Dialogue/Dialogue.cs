@@ -10,12 +10,14 @@ public struct DialogueChunkData
     public string chunkText;
     public float typingDelay;
     public bool waitInput;
+    public bool playVoiceSound;
 
     public DialogueChunkData(string chunkText)
     {
         this.chunkText = chunkText;
         this.typingDelay = -1f;
         this.waitInput = false;
+        this.playVoiceSound = true;
     }
 }
 
@@ -42,6 +44,7 @@ public class Dialogue
     private const string ACTOR_TAG = "actor";
     private const string TYPING_DELAY = "typing_delay";
     private const string CONTINUE_LINE = "continue_line";
+    private const string MUTED = "mute_line";
 
 
     public Dialogue(TextAsset inkAsset)
@@ -154,6 +157,9 @@ public class Dialogue
     {
         bool continueLine = false;
 
+        int textChunksCount = dialogueLineData.lineTextChunks.Count;
+        DialogueChunkData lastInsertedChunk = dialogueLineData.lineTextChunks[textChunksCount - 1];
+
         // loop through each tag and handle it accordingly
         foreach (string tag in lineTags)
         {
@@ -176,22 +182,23 @@ public class Dialogue
                 case TYPING_DELAY:
                     float typingDelay;
                     if (float.TryParse(tagValue, NumberStyles.Float, CultureInfo.InvariantCulture, out typingDelay))
-                    {
-                        int textChunksCount = dialogueLineData.lineTextChunks.Count;
-                        DialogueChunkData lastInsertedChunk = dialogueLineData.lineTextChunks[textChunksCount - 1];
+                    {     
                         lastInsertedChunk.typingDelay = typingDelay;
-                        
                         dialogueLineData.lineTextChunks[textChunksCount - 1] = lastInsertedChunk;
-
                     }
                     else
                     {
                         Debug.LogWarning("Failed to parse typing delay: " + tagValue);
                     }
                     break;
-
+                    ;
                 case CONTINUE_LINE:
                     continueLine = true;
+                    break;
+
+                case MUTED:
+                    lastInsertedChunk.playVoiceSound = false;
+                    dialogueLineData.lineTextChunks[textChunksCount - 1] = lastInsertedChunk;
                     break;
 
                 default:
