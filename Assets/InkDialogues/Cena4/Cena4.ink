@@ -1,7 +1,7 @@
 INCLUDE ../globals.ink
 
 {PROFESSOR_ACTOR}: Pode entrar!
-{PROFESSOR_ACTOR}: Olá {player_name}! O que está fazendo na escola esse horário?  
+{PROFESSOR_ACTOR}: Olá {format_name(player_name)}! O que está fazendo na escola esse horário?  
 {PROFESSOR_ACTOR}: Se for pela nota da prova, sinto muito, mas eu nem comecei a corrigir elas ainda. 
  
 {PLAYER_ACTOR}: Na verdade, professora, eu queria te perguntar algumas coisas. 
@@ -67,7 +67,7 @@ INCLUDE ../globals.ink
  
 {PLAYER_ACTOR}:  Bem, quais são as diferenças entre um psicólogo e um psiquiatra?  
  
-{PROFESSOR_ACTOR}: Na verdade essa dúvida é bem comum, {player_name}. 
+{PROFESSOR_ACTOR}: Na verdade essa dúvida é bem comum, {format_name(player_name)}. 
 {PROFESSOR_ACTOR}: Existe uma série de diferenças entre esses profissionais.  
 {PROFESSOR_ACTOR}: Um psiquiatra é um profissional formado em medicina. Essencialmente, ele se preocupa com a parte mais biológica dos transtornos mentais. 
 {PROFESSOR_ACTOR}: O psiquiatra é necessário quando é preciso incluir medicamentos ao tratamento. Já que os psicólogos não podem receitá-los. 
@@ -88,10 +88,10 @@ INCLUDE ../globals.ink
 {PROFESSOR_ACTOR}: Transtornos mentais são doenças e, como outras doenças, precisam ser tratadas para que quem as têm possa viver uma vida melhor. 
 {PROFESSOR_ACTOR}: Buscar tratamento para um transtorno mental não é diferente de buscar um médico ao perceber sintomas de gripe ou pressão alta. 
  
-{PLAYER_ACTOR}:  Muito obrigado, professora {professor_name}! 
+{PLAYER_ACTOR}:  Muito obrigado, professora {format_name(professor_name)}! 
 {PLAYER_ACTOR}:  Acho que você me fez entender mais do que eu esperava. 
  
-{PROFESSOR_ACTOR}: De nada. Fico feliz que você me veja como um adulto confiável e eu possa ter ajudado, {player_name}! 
+{PROFESSOR_ACTOR}: De nada. Fico feliz que você me veja como um adulto confiável e eu possa ter ajudado, {format_name(player_name)}! 
 {PROFESSOR_ACTOR}: É preocupante como a ansiedade e depressão vem se tornando problemas muito frequentes hoje em dia. 
 {PROFESSOR_ACTOR}: E ainda assim faltam informações. 
 {PROFESSOR_ACTOR}: Pessoas de todas as idades sofrem, sem saber como lidar com estas questões. 

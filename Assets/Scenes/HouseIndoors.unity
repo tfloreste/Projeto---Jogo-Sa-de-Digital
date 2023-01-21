@@ -1225,6 +1225,7 @@ MonoBehaviour:
   _animatorsToControlUntilEnd:
   - {fileID: 114129466}
   - {fileID: 1624011803}
+  collidersToDisable: []
   cutsceneStartedEvent: {fileID: 11400000, guid: 5a4317d468f93754ab3cab685b02f42b, type: 2}
   cutsceneEndedEvent: {fileID: 11400000, guid: 14af7480061963642bf38ac8d42fe5f3, type: 2}
   setCutsceneIndexOnInk: 1
@@ -6857,8 +6858,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e752be4eefc2944f843b4eb283e4f19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreOtherConditions: 1
-  ignoreSelfCondition: 1
+  ignoreOtherConditions: 0
+  ignoreSelfCondition: 0
   necessaryConditions:
   - {fileID: 11400000, guid: e553b1ba7a512674a917a50a4e85034e, type: 2}
   thisCondition: {fileID: 11400000, guid: f25404830e4bb904a8018eab24ba51b0, type: 2}
@@ -6866,6 +6867,7 @@ MonoBehaviour:
   _animatorsToControlUntilEnd:
   - {fileID: 114129466}
   - {fileID: 1624011803}
+  collidersToDisable: []
   cutsceneStartedEvent: {fileID: 11400000, guid: 5a4317d468f93754ab3cab685b02f42b, type: 2}
   cutsceneEndedEvent: {fileID: 11400000, guid: 14af7480061963642bf38ac8d42fe5f3, type: 2}
   setCutsceneIndexOnInk: 1
@@ -7430,11 +7432,13 @@ MonoBehaviour:
   ignoreSelfCondition: 0
   necessaryConditions:
   - {fileID: 11400000, guid: e8beb02aac256d748b0d4fcc0b6cfda5, type: 2}
+  - {fileID: 11400000, guid: f25404830e4bb904a8018eab24ba51b0, type: 2}
   thisCondition: {fileID: 11400000, guid: c50a002bbaf34e24ebaa779c18896005, type: 2}
   playOnlyOnce: 1
   _animatorsToControlUntilEnd:
   - {fileID: 114129466}
   - {fileID: 1624011803}
+  collidersToDisable: []
   cutsceneStartedEvent: {fileID: 11400000, guid: 5a4317d468f93754ab3cab685b02f42b, type: 2}
   cutsceneEndedEvent: {fileID: 11400000, guid: 14af7480061963642bf38ac8d42fe5f3, type: 2}
   setCutsceneIndexOnInk: 1
@@ -10284,6 +10288,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2f8969c474b04ba47ace908aa452ff51, type: 2}
   - {fileID: 11400000, guid: 5a241f8c164f0fc4f87c26e011886ec4, type: 2}
   - {fileID: 11400000, guid: f3d2f94544fb12444b8e91bafb34eb43, type: 2}
+  - {fileID: 11400000, guid: 26d4d1e9241a69140a050387a4f02285, type: 2}
+  - {fileID: 11400000, guid: 5b9ec02823fa378478dfb8f392290da6, type: 2}
   - {fileID: 11400000, guid: 5bc34e8607a77d840b554526e0244b53, type: 2}
   chooseUntilGetTheRightAnswer: 1
   quizStartedEvent: {fileID: 11400000, guid: b7f67a6c32288cf4db03984a6048b1c4, type: 2}

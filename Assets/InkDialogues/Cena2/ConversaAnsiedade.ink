@@ -1,9 +1,9 @@
 INCLUDE ../globals.ink
 
 
-{PLAYER_ACTOR}: Oi, {a_name}!  
+{PLAYER_ACTOR}: Oi, {format_name(a_name)}!  
 
-{A_ACTOR}: {player_name}! Eu... eu não esperava te ver por aqui hoje! 
+{A_ACTOR}: {format_name(player_name)}! Eu... eu não esperava te ver por aqui hoje! 
 
 {PLAYER_ACTOR}: Só vim ver se está tudo bem.  
 {PLAYER_ACTOR}: Já é o segundo dia que você falta à escola, mesmo estando na semana de provas. 
@@ -20,7 +20,7 @@ INCLUDE ../globals.ink
 
 
 {PLAYER_ACTOR}: Você só o que?  
-{PLAYER_ACTOR}: {a_name}, eu te conheço bem o bastante para saber que você não faltaria sem ter um bom motivo. 
+{PLAYER_ACTOR}: {format_name(a_name)}, eu te conheço bem o bastante para saber que você não faltaria sem ter um bom motivo. 
 {PLAYER_ACTOR}: Ainda mais dois dias seguidos em meio às provas. 
 
  
@@ -58,7 +58,7 @@ INCLUDE ../globals.ink
 {A_ACTOR}: Bem... eles disseram que, possivelmente, eu estava tendo uma crise de ansiedade, ou algo assim.  
 {A_ACTOR}: Falaram que seria bom procurar um psicólogo ou psiquiatra para confirmar. 
 {A_ACTOR}: Mas, na verdade, acho que eles estavam exagerando... 
-{A_ACTOR}: Não é como se eu fosse maluco, {player_name}!  
+{A_ACTOR}: Não é como se eu fosse maluco, {format_name(player_name)}!  
 
 {A_ACTOR}: Não quero acabar num hospício e nem passar a vida tomando aqueles remédios pesados só porque fiquei um pouco nervoso. 
 
@@ -85,7 +85,7 @@ INCLUDE ../globals.ink
 
  
 
-{A_ACTOR}: Ei, espera {player_name}!! Como assim, falar da minha situação? 
+{A_ACTOR}: Ei, espera {format_name(player_name)}!! Como assim, falar da minha situação? 
 {A_ACTOR}: Eu nem sei se realmente tenho alguma coisa ou não, mas mesmo se tivesse prefiro que ninguém saiba. 
 {A_ACTOR}:  Pelo menos por enquanto...  
 
@@ -110,6 +110,6 @@ INCLUDE ../globals.ink
 {A_ACTOR}: Okay! Então vamos lá!
 {A_ACTOR}: Eu vou jogar primeiro e depois você joga.
 
-{A_ACTOR}: Ah! Não acredito! Pulei na hora errada!! Só consegui {endless_runner_points_to_win - 1} pontos!! Eu sempre consigo muito mais do que isso!
+{A_ACTOR}: Ah! Não acredito! Pulei na hora errada!! Só consegui {format_important_text(endless_runner_points_to_win - 1)} pontos!! Eu sempre consigo muito mais do que isso!
 {PLAYER_ACTOR}: Acho que isso facilita as coisas pra mim então!
-{PLAYER_ACTOR}: Se prepare para perder {a_name}!!!
+{PLAYER_ACTOR}: Se prepare para perder {format_name(a_name)}!!!

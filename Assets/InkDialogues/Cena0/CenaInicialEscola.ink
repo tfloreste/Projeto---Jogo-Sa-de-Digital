@@ -1,20 +1,20 @@
 INCLUDE ../globals.ink
 
-{PLAYER_ACTOR}: (É... parece que o {a_name} vai faltar de novo...)  
+{PLAYER_ACTOR}: (É... parece que o {format_name(a_name)} vai faltar de novo...)  
 {PLAYER_ACTOR}: (E ele já perdeu dois dias de prova...)  
 //{PLAYER_ACTOR}: (Já é a segunda vez que ele falta e acaba perdendo um dia de prova)
 
 {PROFESSOR_ACTOR}: Bom dia, turma!  
 {PROFESSOR_ACTOR}: Espero que todos tenham estudado para a prova de hoje! 
 {PROFESSOR_ACTOR}: Antes de começarmos, gostaria de apresentar a nova colega de classe de vocês! 
-{PROFESSOR_ACTOR}: Seja bem-vinda {b_name}! 
+{PROFESSOR_ACTOR}: Seja bem-vinda {format_name(b_name)}! 
 
 {B_ACTOR}: ... #mute_line
 
 
 {PLAYER_ACTOR}: (Por que será que a aluna nova está usando uma blusa? Hoje está realmente bem quente)
 
-{PROFESSOR_ACTOR}: {b_name}, como eu disse antes, hoje teremos uma prova, mas como é seu primeiro dia não precisa se preocupar. 
+{PROFESSOR_ACTOR}: {format_name(b_name)}, como eu disse antes, hoje teremos uma prova, mas como é seu primeiro dia não precisa se preocupar. 
 {PROFESSOR_ACTOR}: Não contarei essa nota na sua média, entretanto gostaria que você fizesse o teste mesmo assim. Tudo bem?  
 
 {B_ACTOR}: ... #mute_line
@@ -30,4 +30,4 @@ INCLUDE ../globals.ink
 {PROFESSOR_ACTOR}: Não?
 {PROFESSOR_ACTOR}: Bem, acho que podemos começar a prova então!  
 
-{PLAYER_ACTOR}: (Parece que {a_name} realmente não vai vir... de novo).
+{PLAYER_ACTOR}: (Parece que {format_name(a_name)} realmente não vai vir... de novo).

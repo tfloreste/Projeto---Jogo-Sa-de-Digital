@@ -160,7 +160,7 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
         DialogueManager.Instance.SetDialogueVariable(playerWonVariableName, playerWon);
 
         yield return new WaitForSeconds(1.5f);
-        //GameOverFadeCompleted();
+        GameOverFadeCompleted();
     }
 
     private bool IsPlayerInCameraView()

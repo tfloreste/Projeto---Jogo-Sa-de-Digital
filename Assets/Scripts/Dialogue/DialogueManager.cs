@@ -316,8 +316,24 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
 
         float voiceEffectTimer = -1f;
 
+        bool processingTag = false;
         foreach (char letter in sentence.ToCharArray())
         {
+            // Abertura de tag
+            if(letter == '<')
+            {
+                processingTag = true;
+            }
+
+            // Se estiver processando uma tag, pula para a proxima letra
+            if (processingTag)
+            {
+                // Ultimo char da tag
+                if (letter == '>')
+                    processingTag = false;
+
+                continue;
+            }
 
             float timer = 0.0f;
             while (true)

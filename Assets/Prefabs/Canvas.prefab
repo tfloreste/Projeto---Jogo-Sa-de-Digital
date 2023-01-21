@@ -491,6 +491,22 @@ PrefabInstance:
       value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1235808462537826796, guid: a901421034d8e0a47b014f9115a316d2, type: 3}
+      propertyPath: m_StyleSheet
+      value: 
+      objectReference: {fileID: 11400000, guid: f952c082cb03451daed3ee968ac6c63e, type: 2}
+    - target: {fileID: 1235808462537826796, guid: a901421034d8e0a47b014f9115a316d2, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235808462537826796, guid: a901421034d8e0a47b014f9115a316d2, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235808462537826796, guid: a901421034d8e0a47b014f9115a316d2, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235808462537826796, guid: a901421034d8e0a47b014f9115a316d2, type: 3}
       propertyPath: m_lineSpacing
       value: 2
       objectReference: {fileID: 0}
@@ -505,6 +521,10 @@ PrefabInstance:
     - target: {fileID: 1235808462537826796, guid: a901421034d8e0a47b014f9115a316d2, type: 3}
       propertyPath: m_characterSpacing
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235808462537826796, guid: a901421034d8e0a47b014f9115a316d2, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1235808462537826799, guid: a901421034d8e0a47b014f9115a316d2, type: 3}
       propertyPath: m_RootOrder

@@ -100,7 +100,8 @@ public class DialogueBehaviour : PlayableBehaviour
 		if(pauseScheduled && director != null && !dialogueClosed)
 		{
 			pauseScheduled = false;
-			PauseTimelineUntilTouch();
+			//PauseTimelineUntilTouch();
+			director.Pause();
 		}
 
 		clipStarted = false;

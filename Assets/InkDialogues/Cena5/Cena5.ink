@@ -21,7 +21,7 @@ INCLUDE ../globals.ink
  
 {A_ACTOR}: Hahaha! 
 {A_ACTOR}: É bom ouvir isso. Acho que fiquei com mais medo do que queria admitir. 
-{A_ACTOR}: Obrigado por se esforçar para me deixar tranquilo, {player_name}. 
+{A_ACTOR}: Obrigado por se esforçar para me deixar tranquilo, {format_name(player_name)}. 
  
 {PLAYER_ACTOR}: De nada. 
 {PLAYER_ACTOR}: Acho bom você ter entendido que eu estou do seu lado. 

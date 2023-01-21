@@ -1892,7 +1892,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: JORNADA NO VILAREJO [.....]
+  m_text: UM PASSO PARA A FELICIDADE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c8a1c374ad51a6f49a73f8b2e646a1cf, type: 2}
   m_sharedMaterial: {fileID: -334684625434220606, guid: c8a1c374ad51a6f49a73f8b2e646a1cf, type: 2}
