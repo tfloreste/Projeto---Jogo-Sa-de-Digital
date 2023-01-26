@@ -33,6 +33,13 @@ public class DialogueTrigger : MonoBehaviour
         DialogueManager.Instance.StartDialogue();
     }
 
+    public void StartDialogue(TextAsset inkDialogue)
+    {
+        Dialogue dialogue = new Dialogue(inkDialogue);
+        DialogueManager.Instance.InitDialogue(dialogue);
+        DialogueManager.Instance.StartDialogue();
+    }
+
     public void SetStartIndex(int index)
     {
         _startIndex = index;

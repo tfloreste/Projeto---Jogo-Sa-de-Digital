@@ -221,13 +221,13 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
 
     public void SaveData(GameData data)
     {
-        if (data.cutscenesConditions.ContainsKey(gameCompletedCondition.name))
+        if (data.conditions.ContainsKey(gameCompletedCondition.name))
         {
-            data.cutscenesConditions[gameCompletedCondition.name] = gameCompletedCondition.value;
+            data.conditions[gameCompletedCondition.name] = gameCompletedCondition.value;
         }
         else
         {
-            data.cutscenesConditions.Add(gameCompletedCondition.name, gameCompletedCondition.value);
+            data.conditions.Add(gameCompletedCondition.name, gameCompletedCondition.value);
         }
     }
 }

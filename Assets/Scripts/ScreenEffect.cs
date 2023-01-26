@@ -22,8 +22,11 @@ public class ScreenEffect : Singleton<ScreenEffect>, IDataPersistence
     private float fadeInDuration = 1.5f;
     private float fadeOutDuration = 1.5f;
     private DayTime currentDayTime = DayTime.DAY;
+    
+    public float FadeOutDuration { get => fadeOutDuration; private set => fadeOutDuration = value; }
+    public float FadeInDuration { get => fadeInDuration; private set => fadeInDuration = value; }
 
-    private void Start()
+    private void OnEnable()
     {
         if(fadeEffect)
             fadeAnimator = fadeEffect.GetComponent<Animator>();
@@ -36,7 +39,7 @@ public class ScreenEffect : Singleton<ScreenEffect>, IDataPersistence
         if (!fadeEffect || !fadeAnimator)
             return;
 
-        StartCoroutine(FadeCoroutine("Base Layer.Fade In", fadeInDuration, keepActive));
+        StartCoroutine(FadeCoroutine("Base Layer.Fade In", FadeInDuration, keepActive));
     }
 
     public void FadeOut(bool keepActive)
@@ -44,7 +47,12 @@ public class ScreenEffect : Singleton<ScreenEffect>, IDataPersistence
         if (!fadeEffect || !fadeAnimator)
             return;
 
-        StartCoroutine(FadeCoroutine("Base Layer.Fade Out", fadeOutDuration, keepActive));
+        StartCoroutine(FadeCoroutine("Base Layer.Fade Out", FadeOutDuration, keepActive));
+    }
+
+    public bool IsScreenFaded()
+    {
+        return fadeEffect != null && fadeEffect.activeSelf;
     }
 
     public void SetDayFilter()
@@ -115,10 +123,10 @@ public class ScreenEffect : Singleton<ScreenEffect>, IDataPersistence
             switch (clip.name)
             {
                 case "Fade In":
-                    fadeInDuration = clip.length;
+                    FadeInDuration = clip.length;
                     break;
                 case "Fade Out":
-                    fadeOutDuration = clip.length;
+                    FadeOutDuration = clip.length;
                     break;
             }
         }

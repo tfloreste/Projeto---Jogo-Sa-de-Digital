@@ -1,0 +1,3 @@
+INCLUDE ../globals.ink
+
+{A_ACTOR}: Talvez se eu tentar focar nos pensamentos positivos eu fique mais calmo...

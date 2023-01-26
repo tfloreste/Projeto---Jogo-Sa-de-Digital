@@ -15,6 +15,9 @@ VAR endless_runner_points = 0
 VAR endless_runner_points_to_win = 30
 VAR player_won_endless_runner_game = false
 
+//Epilogo minigame
+VAR epilogo_points = 0
+
 === function format_name(name) ===
     ~ return format_important_text(name)
 

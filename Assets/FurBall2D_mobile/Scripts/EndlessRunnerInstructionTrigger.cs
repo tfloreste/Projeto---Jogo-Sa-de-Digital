@@ -33,6 +33,9 @@ public class EndlessRunnerInstructionTrigger : MonoBehaviour
 
     private IEnumerator CloseInstructionsCO()
     {
+        if (!intructionsGameObject.activeSelf)
+            yield break;
+
         if (thisAudioSource)
             thisAudioSource.Play();
         

@@ -10,7 +10,7 @@ public class GameData
     public string gameObjectNameForPosition;
     public string sceneName;
     public Direction playerDirection;
-    public SerializableDictionary<string, bool> cutscenesConditions;
+    public SerializableDictionary<string, bool> conditions;
     public DayTime dayTime;
     public string dialogueVariablesJsonState;
 
@@ -20,20 +20,11 @@ public class GameData
     {
         Debug.Log("new GameData created");
         playerPosition = Vector3.zero;
-        sceneName = "School";
+        sceneName = "ThoughtsBubble";
         gameObjectNameForPosition = "";
         playerDirection = Direction.Up;
         dayTime = DayTime.DAY;
 
-        cutscenesConditions = new SerializableDictionary<string, bool>();
-
-        if(cutscenesConditions != null)
-        {
-            Debug.Log("cutscenesConditions created");
-        }
-        else
-        {
-            Debug.Log("cutscenesConditions creation failed");
-        }
+        conditions = new SerializableDictionary<string, bool>();
     }
 }

@@ -25,6 +25,13 @@ public class TimelineController : MonoBehaviour, IDataPersistence
     [SerializeField] private bool setCutsceneIndexOnInk = false;
     [SerializeField] private int cutsceneIndex = 0;
 
+    [Header("Music")]
+    [SerializeField] private AudioSource backgroundMusicSource;
+    [SerializeField] private AudioClip timelineBackgroundClip;
+    [SerializeField] private bool changeBackgroundMusic = false;
+    [SerializeField] private bool changeVolume = false;
+    [SerializeField] private float musicVolume;
+
     private const string lastCutscenePlayedVarName = "last_finished_cutscene";
 
     //[SerializeField] private Animator[] _animatorsToControlUntilPause;
@@ -52,7 +59,9 @@ public class TimelineController : MonoBehaviour, IDataPersistence
         if (ignoreOtherConditions)
             return true;
 
-        Debug.Log("thisCondition for " + gameObject.name + " is '" + thisCondition.name + "' with value: " + thisCondition.value);
+        if(thisCondition)
+            Debug.Log("thisCondition for " + gameObject.name + " is '" + thisCondition.name + "' with value: " + thisCondition.value);
+
         if (playOnlyOnce && thisCondition && thisCondition.value)
             return false;
 
@@ -69,6 +78,7 @@ public class TimelineController : MonoBehaviour, IDataPersistence
     public void StartTimeline()
     {
         //_animatorsDictionary = new Dictionary<string, Animator>();
+        Debug.Log("Starting timeline from " + gameObject.name);
         _animatorControllerDictionary = new Dictionary<string, RuntimeAnimatorController>();
         
         if(collidersToDisable != null)
@@ -86,6 +96,16 @@ public class TimelineController : MonoBehaviour, IDataPersistence
         //_director.stopped += RestoreAnimatorsOnStop;
         //_director.stopped += TimelineFinished; // Asume que a timeline só será pausada no final
         //_director.paused += RestoreAnimatorsOnPause;
+
+        if(changeBackgroundMusic && timelineBackgroundClip && backgroundMusicSource)
+        {
+            backgroundMusicSource.clip = timelineBackgroundClip;
+
+            if (changeVolume)
+                backgroundMusicSource.volume = musicVolume;
+
+            backgroundMusicSource.Play();
+        }
 
         _director.Play();
         _isPlaying = true;
@@ -193,16 +213,16 @@ public class TimelineController : MonoBehaviour, IDataPersistence
         {
             thisCondition.value = false;
 
-            if (data.cutscenesConditions.ContainsKey(thisCondition.name))
-                thisCondition.value = data.cutscenesConditions[thisCondition.name];
+            if (data.conditions.ContainsKey(thisCondition.name))
+                thisCondition.value = data.conditions[thisCondition.name];
         }
             
 
         foreach (BoolVariable condition in necessaryConditions)
         {
             condition.value = false;
-            if (data.cutscenesConditions.ContainsKey(condition.name))
-                condition.value = data.cutscenesConditions[condition.name];
+            if (data.conditions.ContainsKey(condition.name))
+                condition.value = data.conditions[condition.name];
         }
     }
 
@@ -211,13 +231,16 @@ public class TimelineController : MonoBehaviour, IDataPersistence
         if (!this.gameObject.activeSelf)
             return;
 
-        if (data.cutscenesConditions.ContainsKey(thisCondition.name))
+        if (!thisCondition)
+            return;
+
+        if (data.conditions.ContainsKey(thisCondition.name))
         {
-            data.cutscenesConditions[thisCondition.name] = thisCondition.value;
+            data.conditions[thisCondition.name] = thisCondition.value;
         }
         else
         {
-            data.cutscenesConditions.Add(thisCondition.name, thisCondition.value);
+            data.conditions.Add(thisCondition.name, thisCondition.value);
         }
     }
 
