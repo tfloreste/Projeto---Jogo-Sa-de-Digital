@@ -13,6 +13,7 @@ public class EndingScreen : MonoBehaviour
     }
 
     [SerializeField] private EndingTextData[] endingTextsData;
+    [SerializeField] private EndingTextData[] helpNumberTextsData;
     [SerializeField] private GameObject continueText;
     [SerializeField] private float waitingTimeBeforeStart = 1.0f;
     [SerializeField] private float waitingTimeBeforeEnding = 1.0f;
@@ -33,12 +34,40 @@ public class EndingScreen : MonoBehaviour
                     textData.tmpText.gameObject.SetActive(true);
             }
                 
-            
-            StartCoroutine(ShowEndingTexts());
         }
+
+        if (helpNumberTextsData.Length > 0)
+        {
+            foreach (EndingTextData textData in helpNumberTextsData)
+            {
+                Color currentColor = textData.tmpText.color;
+                textData.tmpText.color = new Color(currentColor.r, currentColor.g, currentColor.b, 0.0f);
+
+                if (!textData.tmpText.gameObject.activeSelf)
+                    textData.tmpText.gameObject.SetActive(true);
+            }
+        }
+
+        StartCoroutine(ShowEnding());
     }
 
-    private IEnumerator ShowEndingTexts()
+    private IEnumerator ShowEnding()
+    {
+        if(endingTextsData.Length > 0)
+        {
+            yield return ShowEndingTexts(endingTextsData);
+        }
+
+        if (helpNumberTextsData.Length > 0)
+        {
+            yield return ShowEndingTexts(helpNumberTextsData);
+        }
+
+        if(continueText)
+            continueText.SetActive(true);
+    }
+
+    private IEnumerator ShowEndingTexts(EndingTextData[] endingTextsData)
     {
         yield return new WaitForSeconds(waitingTimeBeforeStart);
 
@@ -52,10 +81,10 @@ public class EndingScreen : MonoBehaviour
 
         yield return new WaitForSeconds(waitingTimeBeforeEnding);
 
-        StartCoroutine(HideEndingTexts());
+        yield return HideEndingTexts(endingTextsData);
     }
 
-    private IEnumerator HideEndingTexts()
+    private IEnumerator HideEndingTexts(EndingTextData[] endingTextsData)
     {
         float currentAlpha = 1.0f;
         float alphaDecreasePerSecond = 1.0f / fadeOutTime;
@@ -75,8 +104,8 @@ public class EndingScreen : MonoBehaviour
             }
         }
 
-        continueText.SetActive(true);
     }
+
 
     private IEnumerator AnimateEndingText(TextMeshProUGUI tmpText, float fadeTime)
     {
