@@ -12,6 +12,15 @@ public class SceneChanger : Singleton<SceneChanger>, IDataPersistence
 
     private bool saveBeforeChangingScene = true;
     private bool performFadeAnimation = false;
+    private bool saveCurrentSceneName = false;
+
+    private bool savePlayerDirection = false;
+    private Direction playerDirection;
+
+    private bool savePlayerPosition = false;
+    private bool setPositionByGameObject = false;
+    private string gameObjectPosition;
+    private Vector3 playerPosition;
 
     public void ChangeTo(string sceneName)
     {
@@ -46,6 +55,38 @@ public class SceneChanger : Singleton<SceneChanger>, IDataPersistence
         performFadeAnimation = shouldFade;
     }
 
+    public void SetSaveCurrentScene(bool shouldSaveCurrentScene)
+    {
+        saveCurrentSceneName = shouldSaveCurrentScene;
+    }
+
+    public void SetSavePlayerPosition(bool shouldSavePosition)
+    {
+        savePlayerPosition = shouldSavePosition;
+    }
+
+    public void SetSavePlayerDirection(bool shouldSavePlayerDirection)
+    {
+        savePlayerDirection = shouldSavePlayerDirection;
+    }
+
+    public void SetGameObjectPositionName(string gameObjectName)
+    {
+        setPositionByGameObject = true;
+        gameObjectPosition = gameObjectName;
+    }
+
+    public void SetPlayerPositionVector(Vector3 positionVector)
+    {
+        setPositionByGameObject = false;
+        playerPosition = positionVector;
+    }
+
+    public void SetPlayerDirection(Direction direction)
+    {
+        playerDirection = direction;
+    }
+
     private IEnumerator ChangeToSceneWithFadeOutCO(string sceneName)
     {
         this.triggered = true;
@@ -76,6 +117,48 @@ public class SceneChanger : Singleton<SceneChanger>, IDataPersistence
             return;
 
         triggered = false;
-        data.sceneName = sceneName;
+        data.sceneName = saveCurrentSceneName ?
+            SceneManager.GetActiveScene().name : 
+            sceneName;
+
+        if (savePlayerPosition)
+        {
+            if (setPositionByGameObject && gameObjectPosition != "")
+            {
+                data.gameObjectNameForPosition = gameObjectPosition;
+                data.playerPosition = Vector3.zero;
+            }
+            else if (!setPositionByGameObject)
+            {
+                data.gameObjectNameForPosition = "";
+                data.playerPosition = playerPosition;
+            }
+        }
+
+        if(savePlayerDirection)
+        {
+            data.playerDirection = playerDirection;
+
+            Debug.Log("DirectionValue: " + data.playerDirection);
+            switch (playerDirection)
+            {
+                case Direction.Right:
+                    Debug.Log("Saved Right direction");
+                    break;
+                case Direction.Left:
+                    Debug.Log("Saved Left direction");
+                    break;
+                case Direction.Up:
+                    Debug.Log("Saved Up direction");
+                    break;
+                case Direction.Down:
+                    Debug.Log("Saved Down direction");
+                    break;
+                default:
+                    Debug.Log("Saved is wrong");
+                    break;
+            }
+        }
     }
+
 }

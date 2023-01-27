@@ -8,6 +8,7 @@ public class MainMenuButtons : MonoBehaviour
 {
     [SerializeField] private CustomButton newGameButton;
     [SerializeField] private CustomButton continueButton;
+    [SerializeField] private CustomButton quitButton;
 
     private bool buttonClicked = false;
 
@@ -29,6 +30,7 @@ public class MainMenuButtons : MonoBehaviour
     {
         newGameButton.Disable();
         continueButton.Disable();
+        quitButton.Disable();
     }
 
 
@@ -51,6 +53,22 @@ public class MainMenuButtons : MonoBehaviour
 
         buttonClicked = true;
         StartCoroutine(LoadGameSceneCO(DataPersistenceManager.instance.GetGameData().sceneName));
+    }
+
+    public void OnQuitClicked()
+    {
+        if (buttonClicked)
+            return;
+
+        buttonClicked = true;
+        StartCoroutine(QuitCoroutine());
+    }
+
+    private IEnumerator QuitCoroutine()
+    {
+        ScreenEffect.Instance.FadeOut(true);
+        yield return new WaitForSeconds(2f);
+        Application.Quit();
     }
 
     private IEnumerator LoadGameSceneCO(string sceneName)
