@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using TMPro;
 
 public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersistence
@@ -21,6 +22,8 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
     [SerializeField] private GameObject player;
     [SerializeField] private BoolVariable gameCompletedCondition;
     [SerializeField] private string sceneToGoOnFinish;
+
+    public UnityAction onGameOver;
 
     private Collider2D playerCollider;
     private Rigidbody2D playerRigidBody;
@@ -146,6 +149,8 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
 
     private IEnumerator GameOverCO()
     {
+        onGameOver?.Invoke();
+
         yield return new WaitForSeconds(0.5f);
 
         moveSpeed.value = 0;

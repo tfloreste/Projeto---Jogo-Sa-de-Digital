@@ -14,6 +14,8 @@ public class EndlessRunnerInstructionTrigger : MonoBehaviour
         instructionsAnimator = intructionsGameObject.GetComponent<Animator>();
         thisAudioSource = GetComponent<AudioSource>();
         intructionsGameObject.SetActive(false);
+
+        EndlessRunnerManager.Instance.onGameOver += CloseInstructions;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -36,7 +38,7 @@ public class EndlessRunnerInstructionTrigger : MonoBehaviour
         if (!instructionsAnimator || !intructionsGameObject.activeSelf)
             yield break;
 
-        if (thisAudioSource)
+        if (!EndlessRunnerManager.Instance.gameOver && thisAudioSource)
             thisAudioSource.Play();
         
         if (instructionsAnimator)
@@ -47,4 +49,5 @@ public class EndlessRunnerInstructionTrigger : MonoBehaviour
 
         intructionsGameObject.SetActive(false);
     }
+
 }
