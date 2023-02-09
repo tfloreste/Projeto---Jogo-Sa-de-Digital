@@ -45,7 +45,7 @@ namespace ThoughtBubbleMiniGame
             if (gameObject.activeSelf && !screenEffect)
                 screenEffect = FindObjectOfType<ScreenEffect>();
 
-            if (!ignoreSelfCondition && thisCondition && thisCondition.value)
+            if (!ignoreSelfCondition && thisCondition && thisCondition.Value)
                 gameObject.SetActive(false);
             else
                 StartCoroutine(CheckConditions());
@@ -149,7 +149,7 @@ namespace ThoughtBubbleMiniGame
         private void EndSceneLevel()
         {
             if(thisCondition)
-                thisCondition.value = true;
+                thisCondition.Value = true;
 
             if (savePointsOnInkVariable && inkVariableName != "")
                 DialogueManager.Instance.SetDialogueVariable<int>(inkVariableName, ScoreManager.Instance.score);
@@ -162,12 +162,12 @@ namespace ThoughtBubbleMiniGame
             if (ignoreOtherConditions)
                 return true;
 
-            if (thisCondition && thisCondition.value)
+            if (thisCondition && thisCondition.Value)
                 return false;
 
             foreach (BoolVariable condition in necessaryConditions)
             {
-                if (!condition.value)
+                if (!condition.Value)
                     return false;
             }
 
@@ -190,18 +190,18 @@ namespace ThoughtBubbleMiniGame
 
             if (thisCondition != null)
             {
-                thisCondition.value = false;
+                thisCondition.Value = false;
 
                 if (data.conditions.ContainsKey(thisCondition.name))
-                    thisCondition.value = data.conditions[thisCondition.name];
+                    thisCondition.Value = data.conditions[thisCondition.name];
             }
 
 
             foreach (BoolVariable condition in necessaryConditions)
             {
-                condition.value = false;
+                condition.Value = false;
                 if (data.conditions.ContainsKey(condition.name))
-                    condition.value = data.conditions[condition.name];
+                    condition.Value = data.conditions[condition.name];
             }
         }
 
@@ -209,11 +209,11 @@ namespace ThoughtBubbleMiniGame
         {
             if (data.conditions.ContainsKey(thisCondition.name))
             {
-                data.conditions[thisCondition.name] = thisCondition.value;
+                data.conditions[thisCondition.name] = thisCondition.Value;
             }
             else
             {
-                data.conditions.Add(thisCondition.name, thisCondition.value);
+                data.conditions.Add(thisCondition.name, thisCondition.Value);
             }
         }
     }

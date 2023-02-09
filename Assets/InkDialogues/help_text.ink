@@ -3,7 +3,7 @@ INCLUDE globals.ink
 { last_finished_cutscene:
 - 1: -> para_casa_de_a
 - 3: -> para_escola
-- 4: -> retorno_casa_de_a
+- 4: -> check_scene4_conditions
 - else: -> developer_message
 }
 
@@ -24,4 +24,29 @@ INCLUDE globals.ink
 === developer_message ===
 Desenvolvedor: Oh! Parece que alguma coisa errada aconteceu.
 Desenvolvedor: Você realmente não deveria poder clicar nesse botão neste momento. Sinto muito!
+-> END
+
+
+=== check_scene4_conditions ===
+{   
+    - !is_searching_for_key && !has_found_key:
+        {PLAYER_ACTOR}: Eu preciso encontrar a casa da professora {format_name(professor_name)}.
+        {PLAYER_ACTOR}: Pelo que ela me disse, a casa fica na região {format_important_text("sul, à esquerda da casa da dona Tereza")}.
+        
+    - is_searching_for_key:
+        {PLAYER_ACTOR}: Aparentemente o professor {format_name("Rogério")} perdeu a chave em algum lugar no parque, que fica no centro do vilarejo.
+        {PLAYER_ACTOR}: Talvez alguém tenha encontrado, então acho que deveria começar perguntando para as pessoas lá.
+        
+    - has_found_key && !has_got_food:
+        {PLAYER_ACTOR}: Agora que encontrei a chave, preciso devolver ela para o professor {format_name("Rogério")}.
+        {PLAYER_ACTOR}: Se não me engano, a casa fica na região {format_important_text("sul, à esquerda da casa da dona Tereza")}.
+        
+    - has_got_food && !gave_food_to_teacher:
+        {PLAYER_ACTOR}: Finalmente consegui algo para a professora {format_name(professor_name)} comer.
+        {PLAYER_ACTOR}: Só preciso voltar para a escola e entregar para ela.
+        
+    - gave_food_to_teacher:
+        -> retorno_casa_de_a
+}
+
 -> END

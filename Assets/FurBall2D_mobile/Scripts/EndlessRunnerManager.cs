@@ -142,7 +142,7 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
 
     private void GameOverFadeCompleted()
     {
-        gameCompletedCondition.value = true;
+        gameCompletedCondition.Value = true;
         DataPersistenceManager.instance.SaveGame();
         SceneChanger.Instance.ChangeTo(sceneToGoOnFinish);
     }
@@ -228,11 +228,11 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
     {
         if (data.conditions.ContainsKey(gameCompletedCondition.name))
         {
-            data.conditions[gameCompletedCondition.name] = gameCompletedCondition.value;
+            data.conditions[gameCompletedCondition.name] = gameCompletedCondition.Value;
         }
         else
         {
-            data.conditions.Add(gameCompletedCondition.name, gameCompletedCondition.value);
+            data.conditions.Add(gameCompletedCondition.name, gameCompletedCondition.Value);
         }
     }
 }

@@ -73,6 +73,8 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
     private IEnumerator ExitDialogueModeCO()
     {
         Debug.Log("Exiting dialogue started");
+        if (currentDialogue == null)
+            yield break;
         //yield return InputDelay();
 
         //dialoguePanel.SetActive(false);

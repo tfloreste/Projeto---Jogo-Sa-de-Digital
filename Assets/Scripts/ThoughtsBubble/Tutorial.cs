@@ -33,7 +33,7 @@ namespace ThoughtBubbleMiniGame
         {
             yield return new WaitUntil(() => dataLoaded);
 
-            if (tutorialCompletedCondition.value)
+            if (tutorialCompletedCondition.Value)
                 this.gameObject.SetActive(false);
             else
                 StartCoroutine(StartTutorial());
@@ -115,7 +115,7 @@ namespace ThoughtBubbleMiniGame
 
         private void EndTutorial()
         {
-            tutorialCompletedCondition.value = true;
+            tutorialCompletedCondition.Value = true;
             this.gameObject.SetActive(false);
             //DataPersistenceManager.instance.SaveGame();
         }
@@ -128,10 +128,10 @@ namespace ThoughtBubbleMiniGame
 
             if (tutorialCompletedCondition != null)
             {
-                tutorialCompletedCondition.value = false;
+                tutorialCompletedCondition.Value = false;
 
                 if (data.conditions.ContainsKey(tutorialCompletedCondition.name))
-                    tutorialCompletedCondition.value = data.conditions[tutorialCompletedCondition.name];
+                    tutorialCompletedCondition.Value = data.conditions[tutorialCompletedCondition.name];
             }
 
             dataLoaded = true;
@@ -141,11 +141,11 @@ namespace ThoughtBubbleMiniGame
         {
             if (data.conditions.ContainsKey(tutorialCompletedCondition.name))
             {
-                data.conditions[tutorialCompletedCondition.name] = tutorialCompletedCondition.value;
+                data.conditions[tutorialCompletedCondition.name] = tutorialCompletedCondition.Value;
             }
             else
             {
-                data.conditions.Add(tutorialCompletedCondition.name, tutorialCompletedCondition.value);
+                data.conditions.Add(tutorialCompletedCondition.name, tutorialCompletedCondition.Value);
             }
         }
     }

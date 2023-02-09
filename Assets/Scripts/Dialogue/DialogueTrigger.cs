@@ -7,6 +7,7 @@ public class DialogueTrigger : MonoBehaviour
     private TextAsset _inkDialogue;
     private int _startIndex = 0;
     private int _finalIndex = 9999;
+    private List<BoolVariable> conditions;
 
     /**
     private void OnTriggerEnter2D(Collider2D collision)
@@ -40,6 +41,38 @@ public class DialogueTrigger : MonoBehaviour
         DialogueManager.Instance.StartDialogue();
     }
 
+    public void StartDialogueIfConditionsMet()
+    {
+        if (!AreConditionsMet())
+            return;
+
+        StartDialogue();
+    }
+
+    public void StartDialogueIfConditionsMet(TextAsset inkDialogue)
+    {
+        if (!AreConditionsMet())
+            return;
+
+        StartDialogue(inkDialogue);
+    }
+
+    public void ClearConditions()
+    {
+        if (conditions == null)
+            conditions = new List<BoolVariable>();
+
+        conditions.Clear();
+    }
+
+    public void AddCondition(BoolVariable condition)
+    {
+        if (conditions == null)
+            conditions = new List<BoolVariable>();
+
+        conditions.Add(condition);
+    }
+
     public void SetStartIndex(int index)
     {
         _startIndex = index;
@@ -53,5 +86,19 @@ public class DialogueTrigger : MonoBehaviour
     public void SetInkDialogue(TextAsset inkDialogue)
     {
         _inkDialogue = inkDialogue;
+    }
+
+    private bool AreConditionsMet()
+    {
+        if (conditions == null)
+            return true;
+
+        foreach (BoolVariable condition in conditions)
+        {
+            if (!condition.Value)
+                return false;
+        }
+
+        return true;
     }
 }

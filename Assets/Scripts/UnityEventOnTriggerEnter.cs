@@ -9,8 +9,10 @@ public class UnityEventOnTriggerEnter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        Debug.Log("OOnTriggerEnter2D fired");
+        if (collision.CompareTag("Player"))
         {
+            Debug.Log("Player fired trigger");
             onTriggerEnterEvent?.Invoke();
         }
     }

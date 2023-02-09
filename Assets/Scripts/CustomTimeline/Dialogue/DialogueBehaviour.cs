@@ -103,6 +103,10 @@ public class DialogueBehaviour : PlayableBehaviour
 			//PauseTimelineUntilTouch();
 			director.Pause();
 		}
+		else if(!pauseScheduled && director && !dialogueClosed)
+        {
+			InputManager.OnTouchStart -= CloseDialogue;
+        }
 
 		clipStarted = false;
 	}

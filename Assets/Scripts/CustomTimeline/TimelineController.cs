@@ -16,6 +16,7 @@ public class TimelineController : MonoBehaviour, IDataPersistence
     [SerializeField] BoolVariable[] necessaryConditions;
     [SerializeField] BoolVariable thisCondition;
     [SerializeField] bool playOnlyOnce = true;
+    [SerializeField] bool playAfterConditionsMet = true;
     [SerializeField] private Animator[] _animatorsToControlUntilEnd;
     [SerializeField] private Collider2D[] collidersToDisable;
     [SerializeField] private GameEvent cutsceneStartedEvent;
@@ -41,16 +42,16 @@ public class TimelineController : MonoBehaviour, IDataPersistence
     private Dictionary<string, RuntimeAnimatorController> _animatorControllerDictionary = null;
 
     private bool _isPlaying = false;
+    private bool _timelineStarted = false;
 
     private void Start()
     {
         _director = GetComponent<PlayableDirector>();
 
-        if (!ignoreSelfCondition && thisCondition && thisCondition.value)
+        if (!ignoreSelfCondition && thisCondition && thisCondition.Value)
             gameObject.SetActive(false);
-        else
-            StartCoroutine(CheckConditions());
-        
+        else if (playAfterConditionsMet)
+            InvokeRepeating("CheckConditionsAndStart", 0.0f, 0.5f);
     }
 
     private bool ConditionsMet()
@@ -60,15 +61,15 @@ public class TimelineController : MonoBehaviour, IDataPersistence
             return true;
 
         if(thisCondition)
-            Debug.Log("thisCondition for " + gameObject.name + " is '" + thisCondition.name + "' with value: " + thisCondition.value);
+            Debug.Log("thisCondition for " + gameObject.name + " is '" + thisCondition.name + "' with value: " + thisCondition.Value);
 
-        if (playOnlyOnce && thisCondition && thisCondition.value)
+        if (playOnlyOnce && thisCondition && thisCondition.Value)
             return false;
 
         foreach(BoolVariable condition in necessaryConditions)
         {
-            Debug.Log("condition '" + condition.name + "' for " + gameObject.name + " has value: " + condition.value);
-            if (!condition.value)
+            Debug.Log("condition '" + condition.name + "' for " + gameObject.name + " has value: " + condition.Value);
+            if (!condition.Value)
                 return false;
         }
 
@@ -110,11 +111,12 @@ public class TimelineController : MonoBehaviour, IDataPersistence
         _director.Play();
         _isPlaying = true;
         cutsceneStartedEvent?.Invoke();
+        _timelineStarted = true;
     }
 
     public void ResumeTimeline()
     {
-        if (!IsPaused() || !ConditionsMet())
+        if (!_timelineStarted || !IsPaused() || !ConditionsMet())
             return;
 
         //SaveAnimatorsControllers(_animatorsToControlUntilPause);
@@ -126,8 +128,11 @@ public class TimelineController : MonoBehaviour, IDataPersistence
     
     public void TimelineFinished()
     {
+        
         if (!_isPlaying)
             return;
+
+        _timelineStarted = false;
 
         if (collidersToDisable != null)
         {
@@ -139,7 +144,7 @@ public class TimelineController : MonoBehaviour, IDataPersistence
 
         if (thisCondition)
         {
-            thisCondition.value = true;
+            thisCondition.Value = true;
         }
 
         if (setCutsceneIndexOnInk && DialogueManager.Instance)
@@ -211,18 +216,18 @@ public class TimelineController : MonoBehaviour, IDataPersistence
 
         if (thisCondition != null)
         {
-            thisCondition.value = false;
+            thisCondition.Value = false;
 
             if (data.conditions.ContainsKey(thisCondition.name))
-                thisCondition.value = data.conditions[thisCondition.name];
+                thisCondition.Value = data.conditions[thisCondition.name];
         }
             
 
         foreach (BoolVariable condition in necessaryConditions)
         {
-            condition.value = false;
+            condition.Value = false;
             if (data.conditions.ContainsKey(condition.name))
-                condition.value = data.conditions[condition.name];
+                condition.Value = data.conditions[condition.name];
         }
     }
 
@@ -236,22 +241,21 @@ public class TimelineController : MonoBehaviour, IDataPersistence
 
         if (data.conditions.ContainsKey(thisCondition.name))
         {
-            data.conditions[thisCondition.name] = thisCondition.value;
+            data.conditions[thisCondition.name] = thisCondition.Value;
         }
         else
         {
-            data.conditions.Add(thisCondition.name, thisCondition.value);
+            data.conditions.Add(thisCondition.name, thisCondition.Value);
         }
     }
 
-
-    private IEnumerator CheckConditions()
+    public void CheckConditionsAndStart()
     {
-        while(!ConditionsMet())
+        Debug.Log("CheckConditionsAndStart fired");
+        if (ConditionsMet())
         {
-            yield return new WaitForSeconds(0.5f);
+            StartTimeline();
+            CancelInvoke("CheckConditionsAndStart");
         }
-
-        StartTimeline();
     }
 }

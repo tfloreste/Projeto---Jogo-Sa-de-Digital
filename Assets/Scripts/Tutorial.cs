@@ -13,7 +13,10 @@ public class Tutorial : MonoBehaviour
 
     // Lista de objetos para serem desabilitados durante o tutorial
     [SerializeField] private GameObject[] objectsToDisable;
-    
+
+    [Header("Debug")]
+    [SerializeField] private bool openOnStart = false;
+
     [Header("Tutorial Title")]
     [SerializeField] private Animator tutorialTitlePanel;
     [SerializeField] private Animator tutorialTitleTextAnimator;
@@ -74,13 +77,16 @@ public class Tutorial : MonoBehaviour
         movementHandIcon.SetActive(false);
         pointHandIcon.SetActive(false);
 
-        if (tutorialStartCondition.value)
+        if (!openOnStart && tutorialStartCondition.Value)
             gameObject.SetActive(false);
+
+        if (openOnStart)
+            StartTutorial();
     }
 
     private void Update()
     {
-        if (!tutorialStarted && tutorialStartCondition.value)
+        if (!tutorialStarted && tutorialStartCondition.Value)
         {
             tutorialStarted = true;
             StartTutorial();

@@ -15,7 +15,16 @@ public class EndlessRunnerInstructionTrigger : MonoBehaviour
         thisAudioSource = GetComponent<AudioSource>();
         intructionsGameObject.SetActive(false);
 
+    }
+
+    private void OnEnable()
+    {
         EndlessRunnerManager.Instance.onGameOver += CloseInstructions;
+    }
+
+    private void OnDisable()
+    {
+        EndlessRunnerManager.Instance.onGameOver -= CloseInstructions;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
