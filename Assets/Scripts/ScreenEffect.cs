@@ -41,7 +41,6 @@ public class ScreenEffect : Singleton<ScreenEffect>, IDataPersistence
 
     private void Start()
     {
-        Debug.Log("ScreenEffect start fired");
         if (fadeEffect)
             fadeAnimator = fadeEffect.GetComponent<Animator>();
 
@@ -58,7 +57,6 @@ public class ScreenEffect : Singleton<ScreenEffect>, IDataPersistence
         }
 
         SaveAnimationClipsDuration();
-        Debug.Log("ScreenEffect start ended");
     }
 
     private void AutoFadeInCall()
@@ -71,50 +69,38 @@ public class ScreenEffect : Singleton<ScreenEffect>, IDataPersistence
 
     public void FadeIn(bool keepActive)
     {
-        Debug.Log("FadeIn fired");
         if (!fadeEffect || !fadeAnimator)
             return;
 
-        Debug.Log("fadeEffect and fadeAnimator ok");
         UpdateCurrentFadeState();
         if (currentFadeState == FadeState.FADED_IN)
             return;
 
-        Debug.Log("currentFadeState ok");
         if (currentFadeCoroutine != null)
             StopCoroutine(currentFadeCoroutine);
 
-        Debug.Log("starting fadein");
         currentFadeCoroutine = StartCoroutine(FadeCoroutine("Base Layer.Fade In", FadeInDuration, keepActive));
         currentFadeState = FadeState.FADED_IN;
     }
 
     public void FadeOut(bool keepActive)
     {
-        Debug.Log("Fadeout fired");
         if (!fadeEffect || !fadeAnimator)
             return;
 
-        Debug.Log("Fadeout fadeEffect and fadeAnimator ok");
         UpdateCurrentFadeState();
         if (currentFadeState == FadeState.FADED_OUT)
             return;
 
-        Debug.Log("Fadeout currentFadeState ok");
         if (currentFadeCoroutine != null)
             StopCoroutine(currentFadeCoroutine);
 
-        Debug.Log("starting fadeout");
         currentFadeCoroutine = StartCoroutine(FadeCoroutine("Base Layer.Fade Out", FadeOutDuration, keepActive));
         currentFadeState = FadeState.FADED_OUT;
     }
 
     public bool IsScreenFaded()
     {
-        Debug.Log("IsScreenFaded fired");
-        Debug.Log("fadeEffect is not null?: " + (fadeEffect != null));
-        Debug.Log("fadeEffect is active?: " + (fadeEffect.activeSelf));
-
         return fadeEffect != null && fadeEffect.activeSelf;
     }
 
@@ -196,7 +182,6 @@ public class ScreenEffect : Singleton<ScreenEffect>, IDataPersistence
     }
     private void ForceFadeOutState()
     {
-        Debug.Log("ScreenEffect ForceFadeOutState fired");
         if (!fadeEffect)
             return;
 
@@ -211,7 +196,6 @@ public class ScreenEffect : Singleton<ScreenEffect>, IDataPersistence
         }
 
         currentFadeState = FadeState.FADED_OUT;
-        Debug.Log("ScreenEffect ForceFadeOutState ended");
     }
 
     private void UpdateCurrentFadeState()
