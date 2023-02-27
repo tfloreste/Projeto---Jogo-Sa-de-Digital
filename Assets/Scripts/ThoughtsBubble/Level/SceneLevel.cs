@@ -35,10 +35,17 @@ namespace ThoughtBubbleMiniGame
         [SerializeField] private bool changeVolume = false;
         [SerializeField] private float musicVolume;
 
+        [Header("Scene Gallery")]
+        [SerializeField] private bool addSceneToGallery = false;
+        [SerializeField] private bool returnToGalleryAfterSceneEnds = true;
+        [SerializeField] private int gallerySceneIndex = -1;
+        [SerializeField] private string gallerySceneName = "";
+
         public UnityEvent onSceneFinished;
 
-        int currentStepIndex = -1;
-        bool currentDialogueEnded = false;
+        private int currentStepIndex = -1;
+        private bool currentDialogueEnded = false;
+        private GameData gameDataBeforeStarting;
 
         private void Start()
         {
@@ -53,6 +60,7 @@ namespace ThoughtBubbleMiniGame
 
         private void StartSceneLevel()
         {
+            gameDataBeforeStarting = DataPersistenceManager.Instance.GetCurrentGameState();
             if (changeBackgroundMusic && backgroundClip && backgroundMusicSource)
             {
                 backgroundMusicSource.clip = backgroundClip;
@@ -148,8 +156,22 @@ namespace ThoughtBubbleMiniGame
 
         private void EndSceneLevel()
         {
-            if(thisCondition)
+            if (thisCondition)
                 thisCondition.Value = true;
+
+            if (DataPersistenceManager.Instance.LoadedMode == GameLoadedMode.GALLERY)
+            {
+                if (returnToGalleryAfterSceneEnds)
+                {
+                    Debug.Log("Returning to gallery");
+                    SceneChanger.Instance.GoToSceneGallery(true);
+                }
+
+                return;
+            }
+
+            if (addSceneToGallery)
+                SceneGalleryManager.Instance.AddSceneToGallery(gallerySceneIndex, gameDataBeforeStarting, gallerySceneName);
 
             if (savePointsOnInkVariable && inkVariableName != "")
                 DialogueManager.Instance.SetDialogueVariable<int>(inkVariableName, ScoreManager.Instance.score);

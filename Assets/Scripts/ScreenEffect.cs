@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 [System.Serializable]
 public enum DayTime {
@@ -17,41 +18,103 @@ public class ScreenEffect : Singleton<ScreenEffect>, IDataPersistence
     [SerializeField] private GameObject fadeEffect;
     [SerializeField] private GameObject eveningFilter;
     [SerializeField] private GameObject nightFilter;
+    [SerializeField] private bool handleFadeInOnSceneStart = false;
+    [SerializeField] private float autoFadeInTimeSeconds = 0.2f;
+
+    private enum FadeState
+    {
+        FADED_OUT,
+        FADED_IN,
+        NONE
+    };
 
     private Animator fadeAnimator;
     private float fadeInDuration = 1.5f;
     private float fadeOutDuration = 1.5f;
     private DayTime currentDayTime = DayTime.DAY;
+    private FadeState currentFadeState = FadeState.NONE;
+    private Coroutine currentFadeCoroutine;
+    private PlayerSwipeController playerController;
     
     public float FadeOutDuration { get => fadeOutDuration; private set => fadeOutDuration = value; }
     public float FadeInDuration { get => fadeInDuration; private set => fadeInDuration = value; }
 
-    private void OnEnable()
+    private void Start()
     {
-        if(fadeEffect)
+        Debug.Log("ScreenEffect start fired");
+        if (fadeEffect)
             fadeAnimator = fadeEffect.GetComponent<Animator>();
-       
+
+        ForceFadeOutState();
+
+        if (handleFadeInOnSceneStart)
+        {
+            playerController = FindObjectOfType<PlayerSwipeController>();
+            if(playerController)
+                playerController.BlockMovement();
+
+            if(DataPersistenceManager.Instance.LoadedMode != GameLoadedMode.GALLERY)
+                Invoke("AutoFadeInCall", autoFadeInTimeSeconds);
+        }
+
         SaveAnimationClipsDuration();
+        Debug.Log("ScreenEffect start ended");
+    }
+
+    private void AutoFadeInCall()
+    {
+        if(playerController)
+            playerController.UnblockMovement();
+
+        FadeIn(false);
     }
 
     public void FadeIn(bool keepActive)
     {
+        Debug.Log("FadeIn fired");
         if (!fadeEffect || !fadeAnimator)
             return;
 
-        StartCoroutine(FadeCoroutine("Base Layer.Fade In", FadeInDuration, keepActive));
+        Debug.Log("fadeEffect and fadeAnimator ok");
+        UpdateCurrentFadeState();
+        if (currentFadeState == FadeState.FADED_IN)
+            return;
+
+        Debug.Log("currentFadeState ok");
+        if (currentFadeCoroutine != null)
+            StopCoroutine(currentFadeCoroutine);
+
+        Debug.Log("starting fadein");
+        currentFadeCoroutine = StartCoroutine(FadeCoroutine("Base Layer.Fade In", FadeInDuration, keepActive));
+        currentFadeState = FadeState.FADED_IN;
     }
 
     public void FadeOut(bool keepActive)
     {
+        Debug.Log("Fadeout fired");
         if (!fadeEffect || !fadeAnimator)
             return;
 
-        StartCoroutine(FadeCoroutine("Base Layer.Fade Out", FadeOutDuration, keepActive));
+        Debug.Log("Fadeout fadeEffect and fadeAnimator ok");
+        UpdateCurrentFadeState();
+        if (currentFadeState == FadeState.FADED_OUT)
+            return;
+
+        Debug.Log("Fadeout currentFadeState ok");
+        if (currentFadeCoroutine != null)
+            StopCoroutine(currentFadeCoroutine);
+
+        Debug.Log("starting fadeout");
+        currentFadeCoroutine = StartCoroutine(FadeCoroutine("Base Layer.Fade Out", FadeOutDuration, keepActive));
+        currentFadeState = FadeState.FADED_OUT;
     }
 
     public bool IsScreenFaded()
     {
+        Debug.Log("IsScreenFaded fired");
+        Debug.Log("fadeEffect is not null?: " + (fadeEffect != null));
+        Debug.Log("fadeEffect is active?: " + (fadeEffect.activeSelf));
+
         return fadeEffect != null && fadeEffect.activeSelf;
     }
 
@@ -130,6 +193,47 @@ public class ScreenEffect : Singleton<ScreenEffect>, IDataPersistence
                     break;
             }
         }
+    }
+    private void ForceFadeOutState()
+    {
+        Debug.Log("ScreenEffect ForceFadeOutState fired");
+        if (!fadeEffect)
+            return;
+
+        fadeEffect.SetActive(true);
+        Image fadeImg = fadeEffect.gameObject.GetComponent<Image>();
+        if (fadeImg)
+            fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, 1.0f);
+        else
+        {
+            SpriteRenderer fadeSprite = fadeEffect.gameObject.GetComponent<SpriteRenderer>();
+            fadeSprite.color = new Color(fadeSprite.color.r, fadeSprite.color.g, fadeSprite.color.b, 1.0f);
+        }
+
+        currentFadeState = FadeState.FADED_OUT;
+        Debug.Log("ScreenEffect ForceFadeOutState ended");
+    }
+
+    private void UpdateCurrentFadeState()
+    {
+        Image fadeImg = fadeEffect.gameObject.GetComponent<Image>();
+        float currentAlpha;
+        if (fadeImg)
+        {
+            currentAlpha = fadeImg.color.a;
+        }
+        else
+        {
+            SpriteRenderer fadeSprite = fadeEffect.gameObject.GetComponent<SpriteRenderer>();
+            currentAlpha = fadeSprite.color.a;
+        }
+
+        if (Mathf.Approximately(currentAlpha, 1.0f))
+            currentFadeState = FadeState.FADED_OUT;
+        else if (Mathf.Approximately(currentAlpha, 0.0f))
+            currentFadeState = FadeState.FADED_IN;
+        else
+            currentFadeState = FadeState.NONE;
     }
 
     public void LoadData(GameData data)

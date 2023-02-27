@@ -17,7 +17,7 @@ public class GameEnded : MonoBehaviour
     private IEnumerator OnGameEndedCO()
     {
         if (deleteSaveData)
-            DataPersistenceManager.instance.DeleteCurrentProfileData();
+            DataPersistenceManager.Instance.DeleteCurrentProfileData();
 
         yield return new WaitForSeconds(0.2f);
 

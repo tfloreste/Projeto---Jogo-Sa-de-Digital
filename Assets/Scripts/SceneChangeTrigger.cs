@@ -36,9 +36,12 @@ public class SceneChangeTrigger : MonoBehaviour, IDataPersistence
 
     public void ChangeScene(bool performFadeEffect)
     {
+        if (DataPersistenceManager.Instance.LoadedMode == GameLoadedMode.GALLERY)
+            return;
+
         instanceTriggered = true;
         //SetStartPositionData();
-        DataPersistenceManager.instance.SaveGame();
+        DataPersistenceManager.Instance.SaveGame();
         StartCoroutine(LoadNextScene(performFadeEffect));
     }
 

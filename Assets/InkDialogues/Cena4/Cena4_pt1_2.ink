@@ -46,7 +46,7 @@ CONST HUSBAND_NAME = "Rogério"
 {PLAYER_ACTOR}: A propósito... onde fica a casa de vocês mesmo?
 
 {PROFESSOR_ACTOR}: Oh! Sim, claro!
-{PROFESSOR_ACTOR}: Fica na parte {format_important_text("sul")} do vilarejo. É a {format_important_text("sexta casa, contando da direita para a esquerda")}.
+{PROFESSOR_ACTOR}: Fica na parte {format_important_text("de baixo")} do vilarejo. É a {format_important_text("sexta casa, contando da direita para a esquerda")}.
 {PROFESSOR_ACTOR}: Vai ser fácil de achar. Nossa vizinha, a dona {format_name("Tereza")} fica fora de casa praticamente o dia todo olhando a paisagem.
 {PROFESSOR_ACTOR}: Nossa casa fica à esquerda da casa dela.
 

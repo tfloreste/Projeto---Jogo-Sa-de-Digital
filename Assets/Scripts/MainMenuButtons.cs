@@ -10,6 +10,8 @@ public class MainMenuButtons : MonoBehaviour
     [SerializeField] private CustomButton continueButton;
     [SerializeField] private CustomButton quitButton;
 
+    private const string sceneGalleryUnitySceneName = "SceneGallery";
+
     private bool buttonClicked = false;
 
     private void Start()
@@ -20,7 +22,7 @@ public class MainMenuButtons : MonoBehaviour
 
     private void DisableButtonsDependingOnData()
     {
-        if (!DataPersistenceManager.instance.HasGameData())
+        if (!DataPersistenceManager.Instance.HasGameData())
         {
             continueButton.Disable();
         }
@@ -41,9 +43,10 @@ public class MainMenuButtons : MonoBehaviour
 
         buttonClicked = true;
 
-        DataPersistenceManager.instance.NewGame();
-        DataPersistenceManager.instance.SaveGame();
-        StartCoroutine(LoadGameSceneCO(DataPersistenceManager.instance.GetGameData().sceneName));
+        DataPersistenceManager.Instance.ReturnDefaultSettings();
+        DataPersistenceManager.Instance.NewGame();
+        DataPersistenceManager.Instance.SaveGame();
+        StartCoroutine(LoadGameSceneCO(DataPersistenceManager.Instance.GetGameData().sceneName));
     }
 
     public void OnContinueClicked()
@@ -52,7 +55,18 @@ public class MainMenuButtons : MonoBehaviour
             return;
 
         buttonClicked = true;
-        StartCoroutine(LoadGameSceneCO(DataPersistenceManager.instance.GetGameData().sceneName));
+
+        DataPersistenceManager.Instance.ReturnDefaultSettings();
+        StartCoroutine(LoadGameSceneCO(DataPersistenceManager.Instance.GetGameData().sceneName));
+    }
+
+    public void OnSceneGalleryClicked()
+    {
+        if (buttonClicked)
+            return;
+
+        buttonClicked = true;
+        StartCoroutine(LoadGameSceneCO(sceneGalleryUnitySceneName));
     }
 
     public void OnQuitClicked()

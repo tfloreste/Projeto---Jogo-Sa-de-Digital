@@ -14,7 +14,6 @@ public class EndlessRunnerInstructionTrigger : MonoBehaviour
         instructionsAnimator = intructionsGameObject.GetComponent<Animator>();
         thisAudioSource = GetComponent<AudioSource>();
         intructionsGameObject.SetActive(false);
-
     }
 
     private void OnEnable()
@@ -24,7 +23,8 @@ public class EndlessRunnerInstructionTrigger : MonoBehaviour
 
     private void OnDisable()
     {
-        EndlessRunnerManager.Instance.onGameOver -= CloseInstructions;
+        if(EndlessRunnerManager.HasInstance())
+            EndlessRunnerManager.Instance.onGameOver -= CloseInstructions;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -39,6 +39,8 @@ public class EndlessRunnerInstructionTrigger : MonoBehaviour
     private void CloseInstructions()
     {
         InputManager.OnTouchStart -= CloseInstructions;
+        EndlessRunnerManager.Instance.onGameOver -= CloseInstructions;
+
         StartCoroutine(CloseInstructionsCO());
     }
 

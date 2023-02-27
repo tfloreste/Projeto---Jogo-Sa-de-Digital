@@ -479,6 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8fbfa72384aa74095ea676de16c48a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenEffect: {fileID: 0}
 --- !u!1 &149747427
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,6 +755,8 @@ MonoBehaviour:
   fadeEffect: {fileID: 1602822094}
   eveningFilter: {fileID: 0}
   nightFilter: {fileID: 0}
+  handleFadeInOnSceneStart: 0
+  autoFadeInTimeSeconds: 0.2
 --- !u!4 &567116982
 Transform:
   m_ObjectHideFlags: 0
@@ -1530,7 +1533,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 878175574}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.76, y: -2.9, z: 0}
+  m_LocalPosition: {x: 0.2, y: -2.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2108225762}
@@ -2420,7 +2423,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1951406153}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2505,7 +2508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1040247685718445263, guid: c6bf91a205cb79448935387dba4d7d69, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1040247685718445263, guid: c6bf91a205cb79448935387dba4d7d69, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3202,9 +3205,9 @@ RectTransform:
   - {fileID: 28952164}
   - {fileID: 1981599635}
   - {fileID: 1696155659}
-  - {fileID: 1602822095}
   - {fileID: 2066357498}
   - {fileID: 1336255540}
+  - {fileID: 1602822095}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3459,7 +3462,7 @@ RectTransform:
   m_Children:
   - {fileID: 763739236}
   m_Father: {fileID: 1951406153}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}

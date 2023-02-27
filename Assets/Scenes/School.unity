@@ -4118,7 +4118,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540687326}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 12.87, y: 0.8100004, z: 0}
   m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
   m_Children:
@@ -4771,6 +4771,7 @@ MonoBehaviour:
   thisCondition: {fileID: 11400000, guid: 061487faf28593a47b5cdd56d96f3736, type: 2}
   playOnlyOnce: 1
   playAfterConditionsMet: 1
+  fadeOutBeforeStart: 0
   _animatorsToControlUntilEnd:
   - {fileID: 219575437}
   - {fileID: 540687327}
@@ -4785,6 +4786,10 @@ MonoBehaviour:
   changeBackgroundMusic: 0
   changeVolume: 0
   musicVolume: 0
+  addSceneToGallery: 1
+  returnToGalleryAfterSceneEnds: 1
+  gallerySceneIndex: 8
+  gallerySceneName: Aula sobre ansiedade (Parte 2)
 --- !u!320 &739576428
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -5540,6 +5545,8 @@ MonoBehaviour:
   fadeEffect: {fileID: 467673824}
   eveningFilter: {fileID: 1754640234}
   nightFilter: {fileID: 0}
+  handleFadeInOnSceneStart: 1
+  autoFadeInTimeSeconds: 0.2
 --- !u!1001 &1190694836
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6500,11 +6507,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5712906173756801275, guid: 6f6814c96ae99104ba52f537447f46fc, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5712906173756801275, guid: 6f6814c96ae99104ba52f537447f46fc, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -10
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 5712906174019883532, guid: 6f6814c96ae99104ba52f537447f46fc, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -6513,6 +6520,10 @@ PrefabInstance:
     - target: {fileID: 5712906174301584544, guid: 6f6814c96ae99104ba52f537447f46fc, type: 3}
       propertyPath: m_Name
       value: BackToMainMenuUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5712906174301584544, guid: 6f6814c96ae99104ba52f537447f46fc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5712906174301584574, guid: 6f6814c96ae99104ba52f537447f46fc, type: 3}
       propertyPath: sceneChanger
@@ -6536,7 +6547,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5712906174301584575, guid: 6f6814c96ae99104ba52f537447f46fc, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5712906174301584575, guid: 6f6814c96ae99104ba52f537447f46fc, type: 3}
       propertyPath: m_AnchorMax.x
@@ -7709,6 +7720,7 @@ MonoBehaviour:
   thisCondition: {fileID: 11400000, guid: 01a4f97b28c0ec94399c34a8c8a6b257, type: 2}
   playOnlyOnce: 1
   playAfterConditionsMet: 1
+  fadeOutBeforeStart: 0
   _animatorsToControlUntilEnd:
   - {fileID: 219575437}
   - {fileID: 540687327}
@@ -7723,6 +7735,10 @@ MonoBehaviour:
   changeBackgroundMusic: 0
   changeVolume: 0
   musicVolume: 0
+  addSceneToGallery: 1
+  returnToGalleryAfterSceneEnds: 1
+  gallerySceneIndex: 5
+  gallerySceneName: Aula sobre ansiedade (Parte 1)
 --- !u!114 &1745183698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9880,7 +9896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5113073041495445909, guid: 6b2d95b1a49293243a00baca18be3074, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5113073041495445909, guid: 6b2d95b1a49293243a00baca18be3074, type: 3}
       propertyPath: m_AnchorMax.x
@@ -16381,6 +16397,7 @@ MonoBehaviour:
   thisCondition: {fileID: 11400000, guid: e0e3ab3acadae3e42bbdd81aa5b21c4e, type: 2}
   playOnlyOnce: 1
   playAfterConditionsMet: 1
+  fadeOutBeforeStart: 0
   _animatorsToControlUntilEnd:
   - {fileID: 416777689}
   - {fileID: 219575437}
@@ -16397,6 +16414,10 @@ MonoBehaviour:
   changeBackgroundMusic: 0
   changeVolume: 0
   musicVolume: 0
+  addSceneToGallery: 1
+  returnToGalleryAfterSceneEnds: 1
+  gallerySceneIndex: 1
+  gallerySceneName: Mais um dia de prova
 --- !u!114 &1987237634
 MonoBehaviour:
   m_ObjectHideFlags: 0

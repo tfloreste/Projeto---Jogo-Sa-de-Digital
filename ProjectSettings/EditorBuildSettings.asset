@@ -9,11 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 68723c42aaa61db4389574b3d9dfb98f
   - enabled: 1
+    path: Assets/Scenes/SceneGallery.unity
+    guid: 25c33907dd83dc04181a9f862c7bb413
+  - enabled: 1
     path: Assets/Scenes/Thoughts Bubble Minigame/ThoughtsBubble.unity
     guid: 54f2fc6cd722ddf4fa4fdd63af7c52d7
-  - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Scenes/Village_OpenAssets.unity
     guid: 2b627c3ed08194641a85b306cbe88d71

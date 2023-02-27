@@ -11,6 +11,7 @@ public class InteractionButton : MonoBehaviour
 
     private bool isInDialogue = false;
     private bool isVisible = false;
+    private bool isInCutscene = false;
 
     private void Awake()
     {
@@ -25,12 +26,12 @@ public class InteractionButton : MonoBehaviour
     
     private void Update()
     {
-        if (isInDialogue)
+        if (isInDialogue || isInCutscene)
             return;
 
         if (Input.touchCount > 0)
         {
-            int uiLayerMaks = 1 << LayerMask.NameToLayer("UI");
+            int uiLayerMaks = 1 << LayerMask.NameToLayer(uiLayerName);
 
             Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
             Vector2 touchPos = new Vector2(wp.x, wp.y);
@@ -95,6 +96,16 @@ public class InteractionButton : MonoBehaviour
     {
         Debug.Log("OnDialogueEnded fired");
         isInDialogue = false;
+    }
+
+    public void OnCutsceneStarted()
+    {
+        isInCutscene = true;
+    }
+
+    public void OnCutsceneEnded()
+    {
+        isInCutscene = false;
     }
 
 

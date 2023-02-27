@@ -11,6 +11,11 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     private static object _lock = new object();
 
+    public static bool HasInstance()
+    {
+        return _instance != null;
+    }
+
     public static T Instance
     {
         get

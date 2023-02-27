@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneChanger : Singleton<SceneChanger>, IDataPersistence
 {
+    private const string gallerySceneName = "SceneGallery";
+
     [SerializeField] private ScreenEffect screenEffect;
     private bool triggered = false;
     private string sceneName;
@@ -22,9 +24,28 @@ public class SceneChanger : Singleton<SceneChanger>, IDataPersistence
     private string gameObjectPosition;
     private Vector3 playerPosition;
 
+    private bool checkForGalleryMode = true;
+
+    private void Awake()
+    {
+        checkForGalleryMode = true; // por padrão verifica se está no modo de galeria
+    }
+
     public void ChangeTo(string sceneName)
     {
-        if(performFadeAnimation)
+        Debug.Log("ChangeTo called with sceneName: " + sceneName);
+        Debug.Log("IsGalleryMode?: " + (DataPersistenceManager.Instance.LoadedMode == GameLoadedMode.GALLERY));
+        Debug.Log("shouldCheckForGalleryMode?: " + checkForGalleryMode);
+
+        if (checkForGalleryMode && DataPersistenceManager.Instance.LoadedMode == GameLoadedMode.GALLERY)
+            return;
+
+        ChangeScene(sceneName);
+    }
+
+    private void ChangeScene(string sceneName)
+    {
+        if (performFadeAnimation)
         {
             StartCoroutine(ChangeToSceneWithFadeOutCO(sceneName));
             return;
@@ -34,9 +55,25 @@ public class SceneChanger : Singleton<SceneChanger>, IDataPersistence
         this.sceneName = sceneName;
 
         if (saveBeforeChangingScene)
-            DataPersistenceManager.instance.SaveGame();
-       
+            DataPersistenceManager.Instance.SaveGame();
+
         SceneManager.LoadScene(sceneName);
+    }
+
+    public void IgnoreGalleryModeForNextSceneChange()
+    {
+        checkForGalleryMode = false;
+    }
+
+    public void GoToSceneGallery()
+    {
+        ChangeScene(gallerySceneName);
+    }
+
+    public void GoToSceneGallery(bool performFade)
+    {
+        performFadeAnimation = performFade;
+        GoToSceneGallery();
     }
 
     public void ChangeToSceneWithFadeOut(string sceneName)
@@ -93,7 +130,7 @@ public class SceneChanger : Singleton<SceneChanger>, IDataPersistence
         this.sceneName = sceneName;
 
         if(saveBeforeChangingScene)
-            DataPersistenceManager.instance.SaveGame();
+            DataPersistenceManager.Instance.SaveGame();
 
         screenEffect.FadeOut(true);
         yield return new WaitForSeconds(screenEffect.FadeOutDuration);

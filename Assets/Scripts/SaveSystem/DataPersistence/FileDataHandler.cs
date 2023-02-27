@@ -29,6 +29,7 @@ public class FileDataHandler
 
         // use Path.Combine to account for different OS's having different path separators
         string fullPath = Path.Combine(dataDirPath, profileId, dataFileName);
+        Debug.Log("loading scene from path: " + fullPath);
         GameData loadedData = null;
         if (File.Exists(fullPath)) 
         {

@@ -33,7 +33,6 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
     private float increaseSpeedTimer;
     private float currentTimeNotInCameraView = 0.0f;
 
-
     private const string pointsToWinVariableName = "endless_runner_points_to_win";
     private const string playerPointsVariableName = "endless_runner_points";
     private const string playerWonVariableName = "player_won_endless_runner_game";
@@ -44,6 +43,7 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
 
     private void Awake()
     {
+        Debug.Log("EndlessRunnerManager awake fired");
         increaseSpeedTimer = 0;
         moveSpeed.value = 0;
         gameStarted = false;
@@ -143,7 +143,6 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
     private void GameOverFadeCompleted()
     {
         gameCompletedCondition.Value = true;
-        DataPersistenceManager.instance.SaveGame();
         SceneChanger.Instance.ChangeTo(sceneToGoOnFinish);
     }
 
@@ -163,6 +162,7 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
 
         DialogueManager.Instance.SetDialogueVariable(playerPointsVariableName, playerScore);
         DialogueManager.Instance.SetDialogueVariable(playerWonVariableName, playerWon);
+        DataPersistenceManager.Instance.SaveGame();
 
         yield return new WaitForSeconds(1.5f);
         GameOverFadeCompleted();
@@ -226,6 +226,9 @@ public class EndlessRunnerManager : Singleton<EndlessRunnerManager>, IDataPersis
 
     public void SaveData(GameData data)
     {
+        if (data == null || data.conditions == null)
+            return;
+
         if (data.conditions.ContainsKey(gameCompletedCondition.name))
         {
             data.conditions[gameCompletedCondition.name] = gameCompletedCondition.Value;

@@ -15,6 +15,8 @@ INCLUDE globals.ink
 === para_escola ===
 {PLAYER_ACTOR}: Agora eu preciso voltar para a escola conversar com a professora {format_name(professor_name)}.
 {PLAYER_ACTOR}: A escola fica no centro da cidade, no canto direito.
+{PLAYER_ACTOR}: A região da escola possui quatro salas de aula, uma fonte e uma cantina, cercadas por um muro verde.
+{PLAYER_ACTOR}: Eu não consigo deixar de achar estranho que as salas de aula são iguais a todas as casas do vilarejo.
 -> END
 
 === retorno_casa_de_a ===
@@ -31,7 +33,8 @@ Desenvolvedor: Você realmente não deveria poder clicar nesse botão neste mome
 {   
     - !is_searching_for_key && !has_found_key:
         {PLAYER_ACTOR}: Eu preciso encontrar a casa da professora {format_name(professor_name)}.
-        {PLAYER_ACTOR}: Pelo que ela me disse, a casa fica na região {format_important_text("sul, à esquerda da casa da dona Tereza")}.
+        {PLAYER_ACTOR}: Pelo que ela me disse, a casa fica na parte {format_important_text("inferior")} do vilarejo,  {format_important_text("à esquerda da casa da dona Tereza")}.
+        {PLAYER_ACTOR}: Se não me engano é a {format_important_text("sexta casa, contando da direita para a esquerda")}.
         
     - is_searching_for_key:
         {PLAYER_ACTOR}: Aparentemente o professor {format_name("Rogério")} perdeu a chave em algum lugar no parque, que fica no centro do vilarejo.

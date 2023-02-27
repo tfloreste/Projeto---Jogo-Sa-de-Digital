@@ -649,6 +649,10 @@ MonoBehaviour:
   changeBackgroundMusic: 1
   changeVolume: 1
   musicVolume: 0.4
+  addSceneToGallery: 1
+  returnToGalleryAfterSceneEnds: 1
+  gallerySceneIndex: 11
+  gallerySceneName: "Ep\xEDlogo II: Pensaments positivos e negativos"
   onSceneFinished:
     m_PersistentCalls:
       m_Calls:
@@ -1113,7 +1117,7 @@ MonoBehaviour:
           customValue: 0
         explodeTime:
           useDefault: 0
-          customValue: 5
+          customValue: 3
         pointsOnTouch:
           useDefault: 0
           customValue: 10
@@ -1250,6 +1254,8 @@ MonoBehaviour:
   fadeEffect: {fileID: 671365581}
   eveningFilter: {fileID: 0}
   nightFilter: {fileID: 0}
+  handleFadeInOnSceneStart: 0
+  autoFadeInTimeSeconds: 0.2
 --- !u!4 &831199047
 Transform:
   m_ObjectHideFlags: 0
@@ -1428,6 +1434,10 @@ MonoBehaviour:
   changeBackgroundMusic: 0
   changeVolume: 0
   musicVolume: 0
+  addSceneToGallery: 0
+  returnToGalleryAfterSceneEnds: 0
+  gallerySceneIndex: -1
+  gallerySceneName: 
   onSceneFinished:
     m_PersistentCalls:
       m_Calls: []
@@ -1630,7 +1640,7 @@ MonoBehaviour:
           customValue: 0
         explodeTime:
           useDefault: 0
-          customValue: 3
+          customValue: 2
         pointsOnTouch:
           useDefault: 0
           customValue: -20
@@ -2646,6 +2656,10 @@ MonoBehaviour:
   changeBackgroundMusic: 0
   changeVolume: 0
   musicVolume: 0
+  addSceneToGallery: 0
+  returnToGalleryAfterSceneEnds: 1
+  gallerySceneIndex: -1
+  gallerySceneName: 
   onSceneFinished:
     m_PersistentCalls:
       m_Calls:
@@ -3189,6 +3203,10 @@ MonoBehaviour:
   changeBackgroundMusic: 0
   changeVolume: 0
   musicVolume: 0
+  addSceneToGallery: 1
+  returnToGalleryAfterSceneEnds: 0
+  gallerySceneIndex: 0
+  gallerySceneName: "Pr\xF3logo: A crise"
   onSceneFinished:
     m_PersistentCalls:
       m_Calls: []
@@ -4116,7 +4134,7 @@ MonoBehaviour:
           customValue: 0
         explodeTime:
           useDefault: 0
-          customValue: 5
+          customValue: 2
         pointsOnTouch:
           useDefault: 0
           customValue: -10

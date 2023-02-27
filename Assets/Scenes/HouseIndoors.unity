@@ -1317,6 +1317,7 @@ MonoBehaviour:
   thisCondition: {fileID: 11400000, guid: 4eecfa4a4ec2749458a35bcbea7aebab, type: 2}
   playOnlyOnce: 1
   playAfterConditionsMet: 1
+  fadeOutBeforeStart: 0
   _animatorsToControlUntilEnd:
   - {fileID: 114129466}
   - {fileID: 1624011803}
@@ -1330,6 +1331,10 @@ MonoBehaviour:
   changeBackgroundMusic: 0
   changeVolume: 0
   musicVolume: 0
+  addSceneToGallery: 1
+  returnToGalleryAfterSceneEnds: 1
+  gallerySceneIndex: 9
+  gallerySceneName: Teste de conhecimento
 --- !u!320 &383283702
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -1574,6 +1579,7 @@ MonoBehaviour:
   thisCondition: {fileID: 0}
   playOnlyOnce: 1
   playAfterConditionsMet: 1
+  fadeOutBeforeStart: 0
   _animatorsToControlUntilEnd:
   - {fileID: 1624011803}
   - {fileID: 290217674}
@@ -1588,6 +1594,10 @@ MonoBehaviour:
   changeBackgroundMusic: 1
   changeVolume: 0
   musicVolume: 0
+  addSceneToGallery: 1
+  returnToGalleryAfterSceneEnds: 1
+  gallerySceneIndex: 12
+  gallerySceneName: "Ep\xEDlogo III: Uma decis\xE3o"
 --- !u!320 &393145186
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -6682,6 +6692,7 @@ MonoBehaviour:
   thisCondition: {fileID: 11400000, guid: fa28577e261f4d54983ef671fdd1f284, type: 2}
   playOnlyOnce: 1
   playAfterConditionsMet: 1
+  fadeOutBeforeStart: 0
   _animatorsToControlUntilEnd:
   - {fileID: 1624011803}
   - {fileID: 290217674}
@@ -6696,6 +6707,10 @@ MonoBehaviour:
   changeBackgroundMusic: 1
   changeVolume: 1
   musicVolume: 0.5
+  addSceneToGallery: 1
+  returnToGalleryAfterSceneEnds: 1
+  gallerySceneIndex: 10
+  gallerySceneName: "Ep\xEDlogo I: Ins\xF4nia"
 --- !u!320 &923812202
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -7423,6 +7438,7 @@ MonoBehaviour:
   thisCondition: {fileID: 11400000, guid: f25404830e4bb904a8018eab24ba51b0, type: 2}
   playOnlyOnce: 1
   playAfterConditionsMet: 1
+  fadeOutBeforeStart: 0
   _animatorsToControlUntilEnd:
   - {fileID: 114129466}
   - {fileID: 1624011803}
@@ -7436,6 +7452,10 @@ MonoBehaviour:
   changeBackgroundMusic: 0
   changeVolume: 0
   musicVolume: 0
+  addSceneToGallery: 1
+  returnToGalleryAfterSceneEnds: 1
+  gallerySceneIndex: 3
+  gallerySceneName: Uma conversa sincera
 --- !u!114 &1033612296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8000,6 +8020,7 @@ MonoBehaviour:
   thisCondition: {fileID: 11400000, guid: c50a002bbaf34e24ebaa779c18896005, type: 2}
   playOnlyOnce: 1
   playAfterConditionsMet: 1
+  fadeOutBeforeStart: 0
   _animatorsToControlUntilEnd:
   - {fileID: 114129466}
   - {fileID: 1624011803}
@@ -8013,6 +8034,10 @@ MonoBehaviour:
   changeBackgroundMusic: 0
   changeVolume: 0
   musicVolume: 0
+  addSceneToGallery: 1
+  returnToGalleryAfterSceneEnds: 1
+  gallerySceneIndex: 4
+  gallerySceneName: "Permiss\xE3o Concedida"
 --- !u!320 &1199815971
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -11454,6 +11479,8 @@ MonoBehaviour:
   fadeEffect: {fileID: 56179933}
   eveningFilter: {fileID: 95614246}
   nightFilter: {fileID: 1298674313}
+  handleFadeInOnSceneStart: 1
+  autoFadeInTimeSeconds: 0.2
 --- !u!1 &1766329140 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6063580956063154331, guid: f49be27a1b402ca42b8383af00373ffc, type: 3}

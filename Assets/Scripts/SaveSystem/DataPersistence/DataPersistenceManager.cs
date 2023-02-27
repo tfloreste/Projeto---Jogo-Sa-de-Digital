@@ -22,22 +22,26 @@ public class DataPersistenceManager : MonoBehaviour
     private GameData gameData;
     private List<IDataPersistence> dataPersistenceObjects;
     private FileDataHandler dataHandler;
+    private GameLoadedMode loadedMode = GameLoadedMode.NORMAL;
 
-    private string selectedProfileId = "save";
+    private string standardProfileId = "save";
+    private string selectedProfileId;
 
     //private Coroutine autoSaveCoroutine;
 
-    public static DataPersistenceManager instance { get; private set; }
+    public static DataPersistenceManager Instance { get; private set; }
+    public bool UseEncryption { get => useEncryption; private set => useEncryption = value; }
+    public GameLoadedMode LoadedMode { get => loadedMode; private set => loadedMode = value; }
 
     private void Awake() 
     {
-        if (instance != null) 
+        if (Instance != null) 
         {
             Debug.Log("Found more than one Data Persistence Manager in the scene. Destroying the newest one.");
             Destroy(this.gameObject);
             return;
         }
-        instance = this;
+        Instance = this;
         DontDestroyOnLoad(this.gameObject);
 
         if (disableDataPersistence) 
@@ -45,7 +49,9 @@ public class DataPersistenceManager : MonoBehaviour
             Debug.LogWarning("Data Persistence is currently disabled!");
         }
 
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
+        Debug.Log("setting standardProfileId");
+        selectedProfileId = standardProfileId;
+        SetDefaultDataHandler();
 
         InitializeSelectedProfileId();
     }
@@ -58,6 +64,16 @@ public class DataPersistenceManager : MonoBehaviour
     private void OnDisable() 
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    public void SetDataHander(FileDataHandler dataHandler)
+    {
+        this.dataHandler = dataHandler;
+    }
+
+    public void SetDefaultDataHandler()
+    {
+        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode) 
@@ -79,6 +95,27 @@ public class DataPersistenceManager : MonoBehaviour
         this.selectedProfileId = newProfileId;
         // load the game, which will use that profile, updating our game data accordingly
         LoadGame();
+    }
+
+    public void SetDefaultProfileId()
+    {
+        string profileId = overrideSelectedProfileId ?
+            testSelectedProfileId :
+            standardProfileId;
+
+        ChangeSelectedProfileId(profileId);
+    }
+
+    public void SetGameLoadedMode(GameLoadedMode gameLoadedMode)
+    {
+        loadedMode = gameLoadedMode;
+    }
+
+    public void ReturnDefaultSettings()
+    {
+        SetDefaultDataHandler();
+        SetDefaultProfileId();
+        SetGameLoadedMode(GameLoadedMode.NORMAL);
     }
 
     public void DeleteProfileData(string profileId, bool callLoadGame) 
@@ -149,7 +186,7 @@ public class DataPersistenceManager : MonoBehaviour
     public void SaveGame()
     {
         // return right away if data persistence is disabled
-        if (disableDataPersistence) 
+        if (disableDataPersistence || loadedMode == GameLoadedMode.GALLERY) 
         {
             return;
         }
@@ -196,6 +233,31 @@ public class DataPersistenceManager : MonoBehaviour
     public GameData GetGameData()
     {
         return gameData;
+    }
+
+    public GameData GetCurrentGameState()
+    {
+        if (this.gameData == null)
+        {
+            return null;
+        }
+
+        GameData currentGameData = GameData.CopyGameData(gameData);
+
+        // Realizar um "fakeSave" para pegar o estado mais atual
+        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        {
+            dataPersistenceObj.SaveData(currentGameData);
+        }
+
+        PlayerSwipeController playerController = FindObjectOfType<PlayerSwipeController>();
+        if(playerController)
+        {
+            Transform playerTransform = playerController.gameObject.transform;
+            currentGameData.playerPosition = playerTransform.position;
+        }
+        
+        return currentGameData;
     }
 
     public Dictionary<string, GameData> GetAllProfilesGameData() 

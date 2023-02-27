@@ -17,6 +17,7 @@ public class TimelineController : MonoBehaviour, IDataPersistence
     [SerializeField] BoolVariable thisCondition;
     [SerializeField] bool playOnlyOnce = true;
     [SerializeField] bool playAfterConditionsMet = true;
+    [SerializeField] bool fadeOutBeforeStart = false; // Ignorado no modo de galeria
     [SerializeField] private Animator[] _animatorsToControlUntilEnd;
     [SerializeField] private Collider2D[] collidersToDisable;
     [SerializeField] private GameEvent cutsceneStartedEvent;
@@ -33,6 +34,12 @@ public class TimelineController : MonoBehaviour, IDataPersistence
     [SerializeField] private bool changeVolume = false;
     [SerializeField] private float musicVolume;
 
+    [Header("Scene Gallery")]
+    [SerializeField] private bool addSceneToGallery = false;
+    [SerializeField] private bool returnToGalleryAfterSceneEnds = true;
+    [SerializeField] private int gallerySceneIndex = 0;
+    [SerializeField] private string gallerySceneName = "";
+
     private const string lastCutscenePlayedVarName = "last_finished_cutscene";
 
     //[SerializeField] private Animator[] _animatorsToControlUntilPause;
@@ -43,6 +50,7 @@ public class TimelineController : MonoBehaviour, IDataPersistence
 
     private bool _isPlaying = false;
     private bool _timelineStarted = false;
+    private GameData gameDataBeforeStarting;
 
     private void Start()
     {
@@ -78,11 +86,16 @@ public class TimelineController : MonoBehaviour, IDataPersistence
 
     public void StartTimeline()
     {
-        //_animatorsDictionary = new Dictionary<string, Animator>();
-        Debug.Log("Starting timeline from " + gameObject.name);
+        cutsceneStartedEvent?.Invoke();
+        StartCoroutine(StartTimelineCO());
+    }
+
+    private IEnumerator StartTimelineCO()
+    {
+        gameDataBeforeStarting = DataPersistenceManager.Instance.GetCurrentGameState();
         _animatorControllerDictionary = new Dictionary<string, RuntimeAnimatorController>();
-        
-        if(collidersToDisable != null)
+
+        if (collidersToDisable != null)
         {
             foreach (Collider2D collider in collidersToDisable)
             {
@@ -98,7 +111,7 @@ public class TimelineController : MonoBehaviour, IDataPersistence
         //_director.stopped += TimelineFinished; // Asume que a timeline só será pausada no final
         //_director.paused += RestoreAnimatorsOnPause;
 
-        if(changeBackgroundMusic && timelineBackgroundClip && backgroundMusicSource)
+        if (changeBackgroundMusic && timelineBackgroundClip && backgroundMusicSource)
         {
             backgroundMusicSource.clip = timelineBackgroundClip;
 
@@ -108,9 +121,16 @@ public class TimelineController : MonoBehaviour, IDataPersistence
             backgroundMusicSource.Play();
         }
 
+        if(fadeOutBeforeStart && DataPersistenceManager.Instance.LoadedMode != GameLoadedMode.GALLERY)
+        {
+            Debug.Log("FadeOut before starting: " + ScreenEffect.Instance.FadeOutDuration);
+            ScreenEffect.Instance.FadeOut(true);
+            yield return new WaitForSeconds(ScreenEffect.Instance.FadeOutDuration);
+        }
+
+        Debug.Log("Starting timeline");
         _director.Play();
         _isPlaying = true;
-        cutsceneStartedEvent?.Invoke();
         _timelineStarted = true;
     }
 
@@ -134,6 +154,20 @@ public class TimelineController : MonoBehaviour, IDataPersistence
 
         _timelineStarted = false;
 
+        if(DataPersistenceManager.Instance.LoadedMode == GameLoadedMode.GALLERY)
+        {
+            if(returnToGalleryAfterSceneEnds)
+            {
+                Debug.Log("Returning to gallery");
+                SceneChanger.Instance.GoToSceneGallery(false);
+            }
+
+            return;
+        }
+
+        if (addSceneToGallery)
+            SceneGalleryManager.Instance.AddSceneToGallery(gallerySceneIndex, gameDataBeforeStarting, gallerySceneName);
+
         if (collidersToDisable != null)
         {
             foreach (Collider2D collider in collidersToDisable)
@@ -150,7 +184,7 @@ public class TimelineController : MonoBehaviour, IDataPersistence
         if (setCutsceneIndexOnInk && DialogueManager.Instance)
             DialogueManager.Instance.SetDialogueVariable<int>(lastCutscenePlayedVarName, cutsceneIndex);
 
-        DataPersistenceManager.instance.SaveGame();
+        DataPersistenceManager.Instance.SaveGame();
 
         _isPlaying = false;
         cutsceneEndedEvent?.Invoke();
@@ -229,6 +263,7 @@ public class TimelineController : MonoBehaviour, IDataPersistence
             if (data.conditions.ContainsKey(condition.name))
                 condition.Value = data.conditions[condition.name];
         }
+
     }
 
     public void SaveData(GameData data)
