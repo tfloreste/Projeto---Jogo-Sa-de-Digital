@@ -7,10 +7,17 @@ public class NPCInteraction : MonoBehaviour, IInteractable
 
     [SerializeField] TextAsset inkDialogueText;
     [SerializeField] InteractionButton interactionButton;
-    
+
+    private TalkHelpUI talkHelpUI;
+    private bool isPlayerOnRange = false;
+
+    private void Start()
+    {
+        talkHelpUI = FindObjectOfType<TalkHelpUI>();    
+    }
+
     public void Interact()
     {
-        Debug.Log("Npc interact fired");
         Dialogue dialogue = new Dialogue(inkDialogueText);
         DialogueManager.Instance.InitDialogue(dialogue);
         DialogueManager.Instance.StartDialogue();
@@ -18,12 +25,26 @@ public class NPCInteraction : MonoBehaviour, IInteractable
 
     public void InInteractionRange()
     {
+        if (isPlayerOnRange)
+            return;
+
+        isPlayerOnRange = true;
         interactionButton.Show(this);
+
+        if (talkHelpUI)
+            talkHelpUI.ShowTalkingHelp();
     }
 
     public void OutOfInteractionRange()
     {
+        if (!isPlayerOnRange)
+            return;
+
+        isPlayerOnRange = false;
         interactionButton.Hide();
+
+        if (talkHelpUI)
+            talkHelpUI.CloseTalkingHelp();
     }
 
 }

@@ -11,7 +11,10 @@ public class InteractionButton : MonoBehaviour
 
     private bool isInDialogue = false;
     private bool isVisible = false;
+    private bool shouldBeVisible = false;
     private bool isInCutscene = false;
+
+    private TalkHelpUI talkHelpUI;
 
     private void Awake()
     {
@@ -22,6 +25,7 @@ public class InteractionButton : MonoBehaviour
     private void Start()
     {
         gameObject.SetActive(false);
+        talkHelpUI = FindObjectOfType<TalkHelpUI>();
     }
     
     private void Update()
@@ -87,15 +91,24 @@ public class InteractionButton : MonoBehaviour
 
     public void OnDialogueStarted()
     {
+        shouldBeVisible = false;
         isInDialogue = true;
         if(gameObject.activeSelf)
+        {
+            shouldBeVisible = true;
             Hide(false);
+        }
     }
 
     public void OnDialogueEnded()
     {
         Debug.Log("OnDialogueEnded fired");
         isInDialogue = false;
+        if(shouldBeVisible)
+        {
+            Show(interactableObject);
+            shouldBeVisible = false;
+        }
     }
 
     public void OnCutsceneStarted()
