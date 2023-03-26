@@ -14,15 +14,19 @@ public struct DialogueChunkData
 
     public DialogueChunkData(string chunkText)
     {
+        Debug.Log("Creating DialogueChunkData with text: " + chunkText);
         this.chunkText = chunkText;
         this.typingDelay = -1f;
         this.waitInput = false;
         this.playVoiceSound = true;
+
+        Debug.Log("Creating DialogueChunkData ended");
     }
 }
 
 public struct DialogueLineData 
 {
+    public bool isSystemMessage;
     public string actor;
     public List<DialogueChunkData> lineTextChunks;
 }
@@ -45,7 +49,7 @@ public class Dialogue
     private const string TYPING_DELAY = "typing_delay";
     private const string CONTINUE_LINE = "continue_line";
     private const string MUTED = "mute_line";
-
+    private const string SYSTEM_MESSAGE = "system_message";
 
     public Dialogue(TextAsset inkAsset)
     {
@@ -67,16 +71,15 @@ public class Dialogue
     {
         DialogueLineData thisLineData = new DialogueLineData();
         thisLineData.lineTextChunks = new List<DialogueChunkData>();
-
-        //Debug.Log("get line at index: " + _currentIndex);
+        Debug.Log("get line at index: " + _currentIndex);
         if (_partialDialogue && _currentIndex > _finalIndex)
         {
             //Debug.Log("reached final index: " + _finalIndex);
             _currentLine = thisLineData;
             return thisLineData;
         }
-           
 
+        thisLineData.isSystemMessage = false;
         bool lineCompleted;
         do
         {
@@ -84,39 +87,54 @@ public class Dialogue
                 break;
 
             string dialogueText = _inkStory.Continue().Trim();
-            if(dialogueText != "")
+            Debug.Log("dialogueText at index " + _currentIndex + ": " + dialogueText);
+            if (dialogueText != "")
             {
+                Debug.Log("dialogueText is not empty");
                 if(thisLineData.actor == "" || thisLineData.actor == null)
                 {
+                    Debug.Log("line actor is empty");
+                    thisLineData.actor = "";
                     string[] splitDialogue = dialogueText.Split(':');
-                    //Debug.Log(splitDialogue);
-                    if(splitDialogue.Length > 1)
+                    Debug.Log(splitDialogue);
+                    if (splitDialogue.Length > 1)
                     {
                         thisLineData.actor = splitDialogue[0];
-                    }
 
-                    string auxDialogueText = "";
-                    for(int i = 1; i < splitDialogue.Length; i++)
-                    {
-                        if (i > 1) auxDialogueText += ":";
-                        auxDialogueText += splitDialogue[i];
-                    }
+                        string auxDialogueText = "";
+                        for (int i = 1; i < splitDialogue.Length; i++)
+                        {
+                            if (i > 1) auxDialogueText += ":";
+                            auxDialogueText += splitDialogue[i];
+                        }
 
-                    dialogueText = auxDialogueText.Trim();
+                        dialogueText = auxDialogueText.Trim();
+                    }
                 }
 
+                Debug.Log("adding text: " + dialogueText);
+
                 DialogueChunkData newChunkData = new DialogueChunkData(dialogueText);
+                Debug.Log("chunk data created");
                 thisLineData.lineTextChunks.Add(newChunkData);
+                Debug.Log("new chunk added");
             }
 
+            Debug.Log("handling tags");
             bool continueLine = HandleTags(_inkStory.currentTags, ref thisLineData);
+            Debug.Log("should continue line?: " + continueLine);
 
             lineCompleted = !continueLine && dialogueText != "";
+
+            Debug.Log("is line completed?: " + lineCompleted);
 
         } while (!lineCompleted);
 
         _currentIndex++;
         _currentLine = thisLineData;
+
+        Debug.Log("thisLineData: ");
+        Debug.Log(thisLineData);
 
         return thisLineData;
     }
@@ -126,7 +144,7 @@ public class Dialogue
         Debug.Log("setting dialogueVariable instance");
         _dialogueVariables = dialogueVariables;
 
-        if(_inkStory != null)
+        if(_inkStory != null && _dialogueVariables != null)
             _dialogueVariables.StartListening(_inkStory);
     }
 
@@ -199,6 +217,10 @@ public class Dialogue
                 case MUTED:
                     lastInsertedChunk.playVoiceSound = false;
                     dialogueLineData.lineTextChunks[textChunksCount - 1] = lastInsertedChunk;
+                    break;
+
+                case SYSTEM_MESSAGE:
+                    dialogueLineData.isSystemMessage = true;
                     break;
 
                 default:

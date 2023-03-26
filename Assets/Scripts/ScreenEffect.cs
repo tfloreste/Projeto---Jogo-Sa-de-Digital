@@ -67,6 +67,9 @@ public class ScreenEffect : Singleton<ScreenEffect>, IDataPersistence
         FadeIn(false);
     }
 
+    public void FadeIn() => FadeIn(false);
+    public void FadeOut() => FadeOut(true);
+
     public void FadeIn(bool keepActive)
     {
         if (!fadeEffect || !fadeAnimator)

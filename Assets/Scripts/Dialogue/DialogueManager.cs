@@ -26,6 +26,9 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
     [SerializeField] private TextMeshProUGUI characterName;
     [SerializeField] private TextMeshProUGUI dialogueText;
 
+    [Header("Requirements")]
+    [SerializeField] private SystemMessageUI systemMessage;
+
     [Header("Dialogue Events")]
     [SerializeField] private GameEvent dialogueStartedEvent;
     [SerializeField] private GameEvent dialogEndedEvent;
@@ -63,6 +66,9 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
 
             dialoguePanel.transform.localScale = new Vector3(0, 0, 0);
         }
+
+        if (!systemMessage)
+            systemMessage = FindObjectOfType<SystemMessageUI>();
     }
 
     public void ExitDialogueMode()
@@ -162,6 +168,12 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
         AdvanceDialogue();
     }
 
+    private void AdvanceDialogueOnSystemMessageClosed()
+    {
+        systemMessage.onSystemMessageClosed -= AdvanceDialogueOnSystemMessageClosed;
+        AdvanceDialogue();
+    }
+
     private void CompleteDialogueMessageOnTouch()
     {
         dialogueText.maxVisibleCharacters = dialogueText.text.Length;
@@ -257,7 +269,9 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
         if (!currentDialogue.CanContinueDialogue())
             return false;
 
+        Debug.Log("Dialogue Manager getting next line");
         DialogueLineData lineData = currentDialogue.GetNextLine();
+        Debug.Log("Dialogue Manager got next line");
         if (lineData.lineTextChunks.Count == 0)
             return false;
 
@@ -266,18 +280,44 @@ public class DialogueManager : Singleton<DialogueManager>, IDataPersistence
 
     public bool AdvanceDialogue()
     {
+        Debug.Log("AdvanceDialogue fired");
         if (currentDialogue == null)
             return false;
 
+        Debug.Log("Preparing next line");
         if (!PrepareNextLine())
         {
+            Debug.Log("ExitDialogueMode");
             StartCoroutine(ExitDialogueModeCO());
             return false;
         }
 
+        Debug.Log("Getting current line");
         DialogueLineData lineData = currentDialogue.GetCurrentLine();
-        StartCoroutine(ShowLine(lineData));
+        Debug.Log("Current line ok!");
+
+        if (lineData.isSystemMessage)
+        {
+
+            Debug.Log("line is system message");
+            if (!systemMessage)
+                throw new MissingReferenceException("Invalid System Message UI reference");
+
+            StartCoroutine(PrepareSystemMessage(lineData.lineTextChunks[0].chunkText));
+        }
+        else
+            StartCoroutine(ShowLine(lineData));
+
         return true;
+    }
+
+    private IEnumerator PrepareSystemMessage(string message)
+    {
+        Debug.Log("PrepareSystemMessage fired");
+        yield return CloseDialogue();
+        Debug.Log("Dialogue UI closed");
+        systemMessage.onSystemMessageClosed += AdvanceDialogueOnSystemMessageClosed;
+        systemMessage.ShowSystemMessage(message);
     }
 
     private IEnumerator ShowLine(DialogueLineData lineData)

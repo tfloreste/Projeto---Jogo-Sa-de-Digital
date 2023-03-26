@@ -19,7 +19,7 @@ VAR NPC_NAME = "Rogério"
 {NPC_NAME}: Coloquei eles em um pote para você levar. Tem o suficiente pra {format_name(professor_name)} e pra você também, então pode pegar alguns também.
 {NPC_NAME}: Acho que depois de todo esse trabalho, você merece uma recompensa.
 
-{NPC_NAME}: <style="C1">*Entrega os cookies para {player_name}*</style>
+{format_name(player_name)} recebeu <style="C1">Cookies</style>! # system_message: item
 
 {PLAYER_ACTOR}: Muito obrigado professor!
 {PLAYER_ACTOR}: Bom... acho que vou indo entregar os cookies para a professora {format_name(professor_name)} antes que ela morra de fome.

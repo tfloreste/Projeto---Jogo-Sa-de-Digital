@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49693fff98d49e64696035551caba652, type: 3}
   m_Name: Cena2 Completed
   m_EditorClassIdentifier: 
-  value: 1
+  value: 0

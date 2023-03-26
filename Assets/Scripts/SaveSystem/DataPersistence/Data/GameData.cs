@@ -14,11 +14,11 @@ public class GameData
     public DayTime dayTime;
     public string dialogueVariablesJsonState;
     public string gallerySceneName; // utilizado apenas para a geleria de cenas
-    public string currentRegionName; 
+    public string currentRegionName;
 
     // the values defined in this constructor will be the default values
     // the game starts with when there's no data to load
-    public GameData() 
+    public GameData()
     {
         Debug.Log("new GameData created");
         playerPosition = Vector3.zero;
@@ -30,6 +30,7 @@ public class GameData
         conditions = new SerializableDictionary<string, bool>();
     }
 
+    // DEEP COPY
     public static GameData CopyGameData(GameData gameDataToCopy)
     {
         GameData newGameData = new GameData();

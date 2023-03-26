@@ -88,7 +88,7 @@ public class MainMenuButtons : MonoBehaviour
     private IEnumerator LoadGameSceneCO(string sceneName)
     {
         ScreenEffect.Instance.FadeOut(true);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(ScreenEffect.Instance.FadeOutDuration);
         SceneManager.LoadScene(sceneName);
     }
 }

@@ -135,9 +135,10 @@ public class Quiz : MonoBehaviour
                 SFXManager.GetInstance().PlayClip(wrongAnswerChosenClip);
             }
             if (chooseUntilGetTheRightAnswer)
+            {
                 alternativeButtons[index].Disable();
-
-            return;
+                return;
+            }
         }
 
         if (currentQuestionIndex < questions.Length - 1)
